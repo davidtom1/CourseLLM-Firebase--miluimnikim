@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Optional read-only collections for canonical lists
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /departments/{deptId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // users collection: only authenticated user can read/write their own document
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId && isValidUserProfile(request.resource.data);
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId && isValidUserProfile(request.resource.data);
+      allow delete: if false;
+    }
+
+    function isValidUserProfile(data) {
+      return data.uid == request.auth.uid
+        && data.email is string
+        && (data.role == "student" || data.role == "teacher")
+        && (data.department is string)
+        && (data.courses is list)
+        && data.courses.size() >= 0;
+    }
+  }
+}
