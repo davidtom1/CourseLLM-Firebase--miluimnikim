@@ -25,7 +25,6 @@ type NavItem = {
   href: string;
   label: string;
   icon: React.ReactNode;
-  isActive?: boolean;
 };
 
 type AppShellProps = {
