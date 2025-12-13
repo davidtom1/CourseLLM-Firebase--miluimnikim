@@ -1,160 +1,119 @@
 'use server';
 
-/**
- * @fileoverview Analyzes a student's message to extract intent, skills, and learning trajectory.
- * This flow is designed to be used in a Socratic learning environment.
- */
-
 import { ai } from '@/ai/genkit';
-import { courseModel } from '@/ai/genkit';
 import { z } from 'zod';
-import { Pool } from 'pg';
-import { v4 as uuidv4 } from 'uuid';
+import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
+import type { AnalyzeMessageRequest } from '../../../functions/src/types/analyzeMessage';
 
-// Check if the DATABASE_URL environment variable is set
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL environment variable is missing. Please check your .env file.");
-}
+// Zod schema for the AnalyzeMessageRequest type
+const AnalyzeMessageRequestSchema = z.object({
+  threadId: z.string(),
+  messageText: z.string(),
+  messageId: z.string().optional(),
+  courseId: z.string().optional(),
+  language: z.string().optional(),
+  maxHistoryMessages: z.number().optional(),
+});
 
-// 1. Corrected Zod Output Schema
+// Zod schema for the MessageAnalysis type
 const MessageAnalysisSchema = z.object({
   intent: z.object({
-    primary: z
-      .enum([
-        'GREETING',
-        'END_CONVERSATION',
-        'ASK_EXPLANATION',
-        'ASK_QUESTION',
-        'PROVIDE_ANSWER',
-        'OFF_TOPIC',
-      ])
-      .describe("The primary classified intent of the student's message."),
-    confidence: z.number().describe('The confidence score of the intent classification.'),
+    labels: z.array(z.string()),
+    primary: z.string(),
+    confidence: z.number(),
   }),
-  skills: z
-    .array(z.string())
-    .describe(
-      'A list of skills or topics the student is engaging with, based on the course material.'
+  skills: z.object({
+    items: z.array(
+      z.object({
+        id: z.string(),
+        displayName: z.string().optional(),
+        confidence: z.number(),
+        role: z.enum(['FOCUS', 'SECONDARY', 'PREREQUISITE']).optional(),
+      })
     ),
+  }),
   trajectory: z.object({
-    status: z
-      .enum(['ON_TRACK', 'OFF_TRACK', 'NEUTRAL'])
-      .describe("The assessment of the student's learning trajectory status."),
-    reasoning: z.string().describe('The reasoning behind the trajectory assessment.'),
+    currentNodes: z.array(z.string()),
+    suggestedNextNodes: z.array(
+      z.object({
+        id: z.string(),
+        reason: z.string().optional(),
+        priority: z.number().optional(),
+      })
+    ),
+    status: z.enum([
+      'ON_TRACK',
+      'STRUGGLING',
+      'TOO_ADVANCED',
+      'REVIEW_NEEDED',
+      'NEW_TOPIC',
+      'UNKNOWN',
+    ]),
+  }),
+  metadata: z.object({
+    processedAt: z.string(),
+    modelVersion: z.string(),
+    threadId: z.string(),
+    messageId: z.string().nullable().optional(),
+    uid: z.string(),
   }),
 });
 
-// Define the schema for the analysis-saving tool
-const SaveAnalysisSchema = z.object({
-  threadId: z.string(),
-  messageId: z.string(),
-  analysis: MessageAnalysisSchema,
-});
+export async function analyzeMessage(
+  input: AnalyzeMessageRequest
+): Promise<MessageAnalysis> {
+  return analyzeMessageFlow(input);
+}
 
-// Initialize the PostgreSQL connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-/**
- * Tool to save the analysis of a student's message to the PostgreSQL database.
- */
-const saveAnalysis = ai.defineTool(
-  {
-    name: 'saveAnalysis',
-    description: 'Saves the message analysis to the PostgreSQL database.',
-    inputSchema: SaveAnalysisSchema,
-    outputSchema: z.void(),
-  },
-  async ({ threadId, messageId, analysis }) => {
-    const client = await pool.connect();
-    try {
-      const query = `
-        INSERT INTO interaction_analysis (id, thread_id, message_id, intent, skills, trajectory, created_at)
-        VALUES ($1, $2, $3, $4, $5, $6, NOW())
-      `;
-      const values = [
-        uuidv4(),
-        threadId,
-        messageId,
-        JSON.stringify(analysis.intent),
-        JSON.stringify(analysis.skills),
-        JSON.stringify(analysis.trajectory),
-      ];
-      await client.query(query, values);
-    } catch (error) {
-      console.error('Error saving analysis to PostgreSQL:', error);
-      throw error;
-    } finally {
-      client.release();
-    }
-  }
-);
-
-// 2 & 3. Corrected Prompt Definition and Genkit API Usage
-const analysisPrompt = ai.definePrompt(
-    {
-      name: 'analysisPrompt',
-      model: courseModel,
-      input: {
-        schema: z.object({ message: z.string() }),
-      },
-      output: {
-        schema: MessageAnalysisSchema,
-      },
-      prompt: `Analyze the following student message to classify their intent, identify the skills they are engaging with, and assess their learning trajectory.
-
-      Student Message: "{message}"
-
-      You must output a JSON object that strictly adheres to the following schema:
-      {
-        "intent": {
-            "primary": "classification of the intent",
-            "confidence": 0.9
-        },
-        "skills": ["list", "of", "skills"],
-        "trajectory": {
-            "status": "assessment of the trajectory",
-            "reasoning": "reasoning for the trajectory assessment"
-        }
-      }
-
-      Possible values for 'intent.primary': 'GREETING', 'END_CONVERSATION', 'ASK_EXPLANATION', 'ASK_QUESTION', 'PROVIDE_ANSWER', 'OFF_TOPIC'.
-      Possible values for 'trajectory.status': 'ON_TRACK', 'OFF_TRACK', 'NEUTRAL'.
-      `,
-    },
-  );
-
-
-/**
- * The main flow for analyzing a student's message.
- */
-export const analyzeMessageFlow = ai.defineFlow(
+const analyzeMessageFlow = ai.defineFlow(
   {
     name: 'analyzeMessageFlow',
-    inputSchema: z.object({
-      message: z.string(),
-      threadId: z.string(),
-      messageId: z.string(),
-    }),
+    inputSchema: AnalyzeMessageRequestSchema,
     outputSchema: MessageAnalysisSchema,
   },
-  async ({ message, threadId, messageId }) => {
-
-    const analysisResponse = await analysisPrompt({message});
-    const analysis = analysisResponse.output;
-
-    if (!analysis) {
-        throw new Error("Failed to get a valid analysis from the AI model.");
-    }
-
-    // 4. Maintain PostgreSQL Logic
-    await saveAnalysis({
-      threadId,
-      messageId,
-      analysis,
-    });
-
-    return analysis;
+  async (input): Promise<MessageAnalysis> => {
+    // 🔧 Placeholder implementation that matches the new MessageAnalysis type.
+    // Later we will replace this with a real LLM call + mapper.
+    return {
+      intent: {
+        labels: ['ASK_EXPLANATION'],
+        primary: 'ASK_EXPLANATION',
+        confidence: 0.95,
+      },
+      skills: {
+        items: [
+          {
+            id: 'bayes-theorem',
+            displayName: 'Bayes Theorem',
+            confidence: 0.9,
+            role: 'FOCUS',
+          },
+          {
+            id: 'probability',
+            displayName: 'Probability',
+            confidence: 0.98,
+            role: 'PREREQUISITE',
+          },
+        ],
+      },
+      trajectory: {
+        currentNodes: ['introduction-to-probability'],
+        suggestedNextNodes: [
+          {
+            id: 'bayes-theorem-explained',
+            reason: 'The user is asking a direct question about this topic.',
+            priority: 1,
+          },
+        ],
+        status: 'ON_TRACK',
+      },
+      metadata: {
+        processedAt: new Date().toISOString(),
+        modelVersion: 'ist-v1',
+        threadId: input.threadId,
+        messageId: input.messageId ?? null,
+        uid: 'user-placeholder', // TODO: wire to real uid from auth
+      },
+    };
   }
 );

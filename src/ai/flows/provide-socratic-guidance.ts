@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { extractAndStoreIST } from '@/lib/ist/extractIST';
 
 const ProvideSocraticGuidanceInputSchema = z.object({
   question: z.string().describe('The student	 question about the course material.'),
@@ -27,6 +28,19 @@ const ProvideSocraticGuidanceOutputSchema = z.object({
 export type ProvideSocraticGuidanceOutput = z.infer<typeof ProvideSocraticGuidanceOutputSchema>;
 
 export async function provideSocraticGuidance(input: ProvideSocraticGuidanceInput): Promise<ProvideSocraticGuidanceOutput> {
+  // Extract IST from the student's question (best-effort, non-blocking)
+  const courseContext = `${input.courseName} - Topic: ${input.topic}`;
+  extractAndStoreIST({
+    utterance: input.question,
+    courseContext,
+    userId: undefined, // TODO: Pass user ID if available from auth context
+    courseId: undefined, // TODO: Pass course ID if available from route params
+  }).catch((err) => {
+    // Already logged in extractAndStoreIST, just prevent unhandled rejection
+    console.error('[IST] Unhandled error in IST extraction:', err);
+  });
+
+  // Continue with normal flow
   return provideSocraticGuidanceFlow(input);
 }
 

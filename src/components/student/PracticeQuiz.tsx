@@ -10,12 +10,15 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { TOPICS } from '@/lib/data';
 import type { QuizQuestion } from '@/lib/types';
-import { generatePracticeQuiz } from '@/ai/flows/generate-practice-quiz';
+// Note: We're now using the DSPy service instead of the Genkit flow
+// import { generatePracticeQuiz } from '@/ai/flows/generate-practice-quiz';
 import { useToast } from '@/hooks/use-toast';
 
 type QuizState = 'initial' | 'loading' | 'active' | 'submitted';
 
-// Helper function to parse the AI-generated quiz string
+// NOTE: This function is no longer used since we now get structured JSON from DSPy service.
+// Kept for reference/fallback. The new flow uses structured JSON with correctIndex.
+// Helper function to parse the AI-generated quiz string (legacy Genkit format)
 function parseQuiz(quizString: string): QuizQuestion[] {
   try {
     const questions: QuizQuestion[] = [];
@@ -58,19 +61,47 @@ export function PracticeQuiz() {
     setQuizState('loading');
     
     try {
-        const result = await generatePracticeQuiz({ topic: selectedTopic });
-        const parsedQuestions = parseQuiz(result.quiz);
-        if (parsedQuestions.length === 0) {
-          throw new Error("Failed to parse the generated quiz.");
+        // Call the new DSPy service via Next.js API route
+        const response = await fetch('/api/dspy/quiz', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            topic: selectedTopic,
+            level: 'medium', // Default level, can be made configurable later
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || errorData.detail || 'Failed to generate quiz');
         }
-        setQuestions(parsedQuestions);
+
+        const result = await response.json();
+        
+        // Transform DSPy response to match QuizQuestion format
+        // DSPy returns: { questions: [{ question, options, correctIndex }] }
+        // Component expects: QuizQuestion[] with { id, question, options, correctAnswer }
+        const transformedQuestions: QuizQuestion[] = result.questions.map((q: any, index: number) => ({
+          id: `q${index + 1}`,
+          question: q.question,
+          options: q.options,
+          correctAnswer: q.options[q.correctIndex], // Convert index to answer text
+        }));
+
+        if (transformedQuestions.length === 0) {
+          throw new Error("No questions generated.");
+        }
+        
+        setQuestions(transformedQuestions);
         setQuizState('active');
     } catch (e) {
-        console.error("AI flow for quiz generation failed.", e);
+        console.error("Quiz generation failed:", e);
         toast({
             variant: "destructive",
             title: "Oh no! Something went wrong.",
-            description: "There was a problem generating the quiz. Please try again.",
+            description: e instanceof Error ? e.message : "There was a problem generating the quiz. Please try again.",
         });
         setQuizState('initial');
     }
