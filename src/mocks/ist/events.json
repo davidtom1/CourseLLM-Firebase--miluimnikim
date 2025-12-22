@@ -1,0 +1,236 @@
+[
+  {
+    "id": "1",
+    "createdAt": "2025-12-13T15:36:30.530Z",
+    "userId": null,
+    "courseId": null,
+    "utterance": "\"I'm struggling to understand the difference between a Hash Map and a standard Array. Can you explain the trade-offs of using each one?\"",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the differences between Hash Maps and standard Arrays, including their trade-offs.",
+    "skills": [
+      "Hash Maps",
+      "Arrays",
+      "Data Structures",
+      "Trade-offs",
+      "Complexity Analysis"
+    ],
+    "trajectory": [
+      "Review the characteristics of Hash Maps and Arrays",
+      "Study the time and space complexity of both data structures",
+      "Explore common use cases for Hash Maps and Arrays",
+      "Work on practice problems that require selecting between these data structures"
+    ]
+  },
+  {
+    "id": "2",
+    "createdAt": "2025-12-13T15:37:36.267Z",
+    "userId": null,
+    "courseId": null,
+    "utterance": "\"When implementing Dijkstra's algorithm, why is using a min-heap the key to achieving the $O(E \\log V)$ time complexity, and not just $O(E^2)$?\"",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking about the role of a min-heap in optimizing Dijkstra's algorithm's time complexity.",
+    "skills": [
+      "Dijkstra's algorithm",
+      "Time complexity analysis",
+      "Data structures",
+      "Min-heap operations",
+      "Graph theory"
+    ],
+    "trajectory": [
+      "Review Dijkstra's algorithm and its steps",
+      "Study the role of data structures in algorithm efficiency",
+      "Explore time complexity concepts in depth",
+      "Practice implementing Dijkstra's algorithm with a min-heap",
+      "Solve related problems that require optimizing algorithms"
+    ]
+  },
+  {
+    "id": "3",
+    "createdAt": "2025-12-13T15:38:03.055Z",
+    "userId": null,
+    "courseId": null,
+    "utterance": "\"I finished the module on sorting algorithms, but I feel completely lost on when to use Merge Sort versus Quick Sort in a real project. What should I practice next to gain confidence?\"",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the practical applications of Merge Sort and Quick Sort.",
+    "skills": [
+      "Sorting Algorithms",
+      "Merge Sort",
+      "Quick Sort",
+      "Algorithm Complexity",
+      "Data Structure Usage"
+    ],
+    "trajectory": [
+      "Review the trade-offs between Merge Sort and Quick Sort in different scenarios.",
+      "Complete practice problems that require selecting the appropriate sorting algorithm based on specific conditions.",
+      "Implement both sorting algorithms in code to solidify understanding.",
+      "Analyze the time and space complexity of each sorting algorithm in varied contexts.",
+      "Engage in project-based tasks where sorting algorithm selection is crucial."
+    ]
+  },
+  {
+    "id": "4",
+    "createdAt": "2025-12-13T15:55:37.287Z",
+    "userId": null,
+    "courseId": null,
+    "utterance": "\"I'm struggling to understand the difference between a Hash Map and a standard Array. Can you explain the trade-offs of using each one?\"",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the differences between Hash Maps and standard Arrays, including their trade-offs.",
+    "skills": [
+      "Hash Maps",
+      "Arrays",
+      "Data Structures",
+      "Trade-offs",
+      "Complexity Analysis"
+    ],
+    "trajectory": [
+      "Review the characteristics of Hash Maps and Arrays",
+      "Study the time and space complexity of both data structures",
+      "Explore common use cases for Hash Maps and Arrays",
+      "Work on practice problems that require selecting between these data structures"
+    ]
+  },
+  {
+    "id": "5",
+    "createdAt": "2025-12-13T15:55:50.409Z",
+    "userId": null,
+    "courseId": null,
+    "utterance": "\"When implementing Dijkstra's algorithm, why is using a min-heap the key to achieving the $O(E \\log V)$ time complexity, and not just $O(E^2)$?\"",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking about the role of a min-heap in optimizing Dijkstra's algorithm's time complexity.",
+    "skills": [
+      "Dijkstra's algorithm",
+      "Time complexity analysis",
+      "Data structures",
+      "Min-heap operations",
+      "Graph theory"
+    ],
+    "trajectory": [
+      "Review Dijkstra's algorithm and its steps",
+      "Study the role of data structures in algorithm efficiency",
+      "Explore time complexity concepts in depth",
+      "Practice implementing Dijkstra's algorithm with a min-heap",
+      "Solve related problems that require optimizing algorithms"
+    ]
+  },
+  {
+    "id": "6",
+    "createdAt": "2025-12-13T15:56:01.803Z",
+    "userId": null,
+    "courseId": null,
+    "utterance": "\"I finished the module on sorting algorithms, but I feel completely lost on when to use Merge Sort versus Quick Sort in a real project. What should I practice next to gain confidence?\"",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the practical applications of Merge Sort and Quick Sort.",
+    "skills": [
+      "Sorting Algorithms",
+      "Merge Sort",
+      "Quick Sort",
+      "Algorithm Complexity",
+      "Data Structure Usage"
+    ],
+    "trajectory": [
+      "Review the trade-offs between Merge Sort and Quick Sort in different scenarios.",
+      "Complete practice problems that require selecting the appropriate sorting algorithm based on specific conditions.",
+      "Implement both sorting algorithms in code to solidify understanding.",
+      "Analyze the time and space complexity of each sorting algorithm in varied contexts.",
+      "Engage in project-based tasks where sorting algorithm selection is crucial."
+    ]
+  },
+  {
+    "id": "7",
+    "createdAt": "2025-12-18T13:01:40.334Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "what is a linked list?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "Unable to extract intent - parsing error occurred.",
+    "skills": [
+      "Error parsing skills"
+    ],
+    "trajectory": [
+      "Review the error logs",
+      "Retry the request"
+    ]
+  },
+  {
+    "id": "8",
+    "createdAt": "2025-12-18T13:03:45.446Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "explain time complexity on a linked list",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "Unable to extract intent - parsing error occurred.",
+    "skills": [
+      "Error parsing skills"
+    ],
+    "trajectory": [
+      "Review the error logs",
+      "Retry the request"
+    ]
+  },
+  {
+    "id": "9",
+    "createdAt": "2025-12-20T17:51:16.857Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "what is the purpose of a linked list?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "Unable to extract intent - parsing error occurred.",
+    "skills": [
+      "Error parsing skills"
+    ],
+    "trajectory": [
+      "Review the error logs",
+      "Retry the request"
+    ]
+  },
+  {
+    "id": "10",
+    "createdAt": "2025-12-20T17:58:53.175Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "how to use in an array?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "Unable to extract intent due to processing error.",
+    "skills": [
+      "Error during analysis"
+    ],
+    "trajectory": [
+      "Review the service logs",
+      "Retry the request"
+    ]
+  },
+  {
+    "id": "11",
+    "createdAt": "2025-12-20T18:14:23.303Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "explain about doubly and single linked list",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "Unable to extract intent due to processing error.",
+    "skills": [
+      "Error during analysis"
+    ],
+    "trajectory": [
+      "Review the service logs",
+      "Retry the request"
+    ]
+  },
+  {
+    "id": "12",
+    "createdAt": "2025-12-20T18:20:59.014Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "what is the difference between a linked list and an array?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "Student is asking for help with a course concept.",
+    "skills": [
+      "Concept understanding",
+      "Problem-solving"
+    ],
+    "trajectory": [
+      "Review lecture materials",
+      "Practice problems",
+      "Ask clarifying questions"
+    ]
+  }
+]
