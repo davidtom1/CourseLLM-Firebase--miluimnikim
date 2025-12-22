@@ -2,14 +2,11 @@
 
 /**
  * @fileOverview Implements a Socratic chat flow for students to interact with course content.
- *
- * - socraticCourseChat - A function that orchestrates the Socratic chat experience.
- * - SocraticCourseChatInput - The input type for the socraticCourseChat function.
- * - SocraticCourseChatOutput - The return type for the socraticCourseChat function.
  */
-
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { courseModel } from '../genkit'; 
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
+import { extractAndStoreIST } from '@/lib/ist/extractIST';
 
 const SocraticCourseChatInputSchema = z.object({
   courseMaterial: z
@@ -25,6 +22,20 @@ const SocraticCourseChatOutputSchema = z.object({
 export type SocraticCourseChatOutput = z.infer<typeof SocraticCourseChatOutputSchema>;
 
 export async function socraticCourseChat(input: SocraticCourseChatInput): Promise<SocraticCourseChatOutput> {
+  // Extract IST from the student's question (best-effort, non-blocking)
+  // Use a short snippet of course material as context
+  const courseContext = input.courseMaterial.substring(0, 200) + '...';
+  extractAndStoreIST({
+    utterance: input.studentQuestion,
+    courseContext,
+    userId: undefined, // TODO: Pass user ID if available from auth context
+    courseId: undefined, // TODO: Pass course ID if available from route params
+  }).catch((err) => {
+    // Already logged in extractAndStoreIST, just prevent unhandled rejection
+    console.error('[IST] Unhandled error in IST extraction:', err);
+  });
+
+  // Continue with normal flow
   return socraticCourseChatFlow(input);
 }
 
@@ -39,8 +50,7 @@ const enforceCompliance = ai.defineTool({
   }),
   outputSchema: z.boolean().describe('Returns true if the response complies with the course material, otherwise returns false.'),
 }, async (input) => {
-  // TODO: Implement the compliance check logic here. This is a placeholder.
-  // For now, we'll just assume it always complies.
+  // TODO: Implement the compliance check logic here.
   console.log(`Course Material: ${input.courseMaterial}`);
   console.log(`AI Response: ${input.response}`);
   return true;
@@ -48,8 +58,9 @@ const enforceCompliance = ai.defineTool({
 
 const socraticPrompt = ai.definePrompt({
   name: 'socraticCourseChatPrompt',
-  input: {schema: SocraticCourseChatInputSchema},
-  output: {schema: SocraticCourseChatOutputSchema},
+  model: courseModel, 
+  input: { schema: SocraticCourseChatInputSchema },
+  output: { schema: SocraticCourseChatOutputSchema },
   tools: [enforceCompliance],
   prompt: `You are a Socratic tutor guiding a student through course material. Ask questions that encourage critical thinking and deeper understanding, referencing only the provided course material.
 
@@ -69,16 +80,36 @@ const socraticCourseChatFlow = ai.defineFlow(
     outputSchema: SocraticCourseChatOutputSchema,
   },
   async input => {
-    const {output} = await socraticPrompt(input);
+    let output: SocraticCourseChatOutput | null = null;
 
-    // Call the enforceCompliance tool to ensure compliance with course material
+    try {
+      const result = await socraticPrompt(input);
+      output = result.output;
+    } catch (err: any) {
+      console.error(
+        '[socratic-course-chat] socraticPrompt failed, returning fallback tutor message instead of throwing:',
+        err
+      );
+
+      // IMPORTANT: do NOT rethrow the error here.
+      // Return a fallback response so the UI does not crash.
+      return {
+        response:
+          'The AI tutor is temporarily unavailable because the upstream model is overloaded (503). '
+          + 'Your question was still processed for IST analysis – please try again in a bit.',
+      };
+    }
+
     const complianceResult = await enforceCompliance({
       courseMaterial: input.courseMaterial,
       response: output!.response,
     });
 
     if (!complianceResult) {
-      return {response: 'I am unable to provide a compliant response based on the course materials.'};
+      return {
+        response:
+          'I am unable to provide a compliant response based on the course materials.',
+      };
     }
 
     return output!;

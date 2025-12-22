@@ -1,7 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# ============================================================================
+# Node.js / Next.js
+# ============================================================================
+
 # dependencies
 /node_modules
+functions/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -13,18 +18,19 @@
 # testing
 /coverage
 
-# next.js
+# next.js build output
 /.next/
 /out/
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
 *.pem
 
-# debug
+# debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -37,24 +43,91 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# genkit
 .genkit/*
-.env*
 
-# firebase
-firebase-debug.log
-firestore-debug.log
-dataconnect-debug.log
-pglite-debug.log
+# ============================================================================
+# Python / DSPy Service
+# ============================================================================
 
-# Python
+# Python virtual environments
+.venv/
+venv/
+dspy_service/.venv/
+dspy_service/venv/
+env/
+ENV/
+
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-venv/
-ENV/
-env/
 
-# Functions
-functions/node_modules/
+# Python egg info
+*.egg-info/
+dist/
+build/
+
+# Pytest cache
+.pytest_cache/
+
+# ============================================================================
+# Environment Variables & Secrets (NEVER COMMIT THESE!)
+# ============================================================================
+
+# Next.js environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Python/DSPy service environment variables
+dspy_service/.env
+dspy_service/.env.local
+
+# Allow example env files for documentation
+!.env.example
+!dspy_service/.env.example
+
+# ============================================================================
+# Firebase
+# ============================================================================
+
+firebase-debug.log
+firestore-debug.log
+firebase-debug.*.log
+
+dataconnect-debug.log
+pglite-debug.log
+
+# ============================================================================
+# IST Pipeline - Local Development Data
+# ============================================================================
+
+# JSON storage for demo mode (contains generated IST events)
+# Note: The actual events.json file is ignored, but events.json.example is committed
+src/mocks/ist/events.json
+
+# Allow the example file to be committed
+!src/mocks/ist/events.json.example
+
+# ============================================================================
+# Operating System Files
+# ============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
