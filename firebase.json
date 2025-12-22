@@ -1,16 +1,22 @@
 {
-  "functions": [
-    {
-      "source": "functions",
-      "codebase": "default",
-      "disallowLegacyRuntimeConfig": true,
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ]
+  "functions": {
+    "source": "functions"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "extensions": {
+      "port": 9199
+    },
+    "dataconnect": {
+      "port": 9400
     }
-  ]
+  },
+  "dataconnect": {
+    "source": "dataconnect"
+  }
 }

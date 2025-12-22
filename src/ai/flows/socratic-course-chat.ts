@@ -6,6 +6,7 @@
 import { courseModel } from '../genkit'; 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
+import { extractAndStoreIST } from '@/lib/ist/extractIST';
 
 const SocraticCourseChatInputSchema = z.object({
   courseMaterial: z
@@ -21,6 +22,20 @@ const SocraticCourseChatOutputSchema = z.object({
 export type SocraticCourseChatOutput = z.infer<typeof SocraticCourseChatOutputSchema>;
 
 export async function socraticCourseChat(input: SocraticCourseChatInput): Promise<SocraticCourseChatOutput> {
+  // Extract IST from the student's question (best-effort, non-blocking)
+  // Use a short snippet of course material as context
+  const courseContext = input.courseMaterial.substring(0, 200) + '...';
+  extractAndStoreIST({
+    utterance: input.studentQuestion,
+    courseContext,
+    userId: undefined, // TODO: Pass user ID if available from auth context
+    courseId: undefined, // TODO: Pass course ID if available from route params
+  }).catch((err) => {
+    // Already logged in extractAndStoreIST, just prevent unhandled rejection
+    console.error('[IST] Unhandled error in IST extraction:', err);
+  });
+
+  // Continue with normal flow
   return socraticCourseChatFlow(input);
 }
 
@@ -65,7 +80,25 @@ const socraticCourseChatFlow = ai.defineFlow(
     outputSchema: SocraticCourseChatOutputSchema,
   },
   async input => {
-    const { output } = await socraticPrompt(input);
+    let output: SocraticCourseChatOutput | null = null;
+
+    try {
+      const result = await socraticPrompt(input);
+      output = result.output;
+    } catch (err: any) {
+      console.error(
+        '[socratic-course-chat] socraticPrompt failed, returning fallback tutor message instead of throwing:',
+        err
+      );
+
+      // IMPORTANT: do NOT rethrow the error here.
+      // Return a fallback response so the UI does not crash.
+      return {
+        response:
+          'The AI tutor is temporarily unavailable because the upstream model is overloaded (503). '
+          + 'Your question was still processed for IST analysis – please try again in a bit.',
+      };
+    }
 
     const complianceResult = await enforceCompliance({
       courseMaterial: input.courseMaterial,
@@ -73,7 +106,10 @@ const socraticCourseChatFlow = ai.defineFlow(
     });
 
     if (!complianceResult) {
-      return { response: 'I am unable to provide a compliant response based on the course materials.' };
+      return {
+        response:
+          'I am unable to provide a compliant response based on the course materials.',
+      };
     }
 
     return output!;

@@ -1,63 +1,119 @@
 'use server';
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
+import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
+import type { AnalyzeMessageRequest } from '../../../functions/src/types/analyzeMessage';
 
-const MessageAnalysisInputSchema = z.object({
-  messageText: z.string().describe("The student's latest chat message."),
-  messageHistory: z.array(z.string()).optional().describe("Recent chat history for context."),
+// Zod schema for the AnalyzeMessageRequest type
+const AnalyzeMessageRequestSchema = z.object({
+  threadId: z.string(),
+  messageText: z.string(),
+  messageId: z.string().optional(),
+  courseId: z.string().optional(),
+  language: z.string().optional(),
+  maxHistoryMessages: z.number().optional(),
 });
 
-const IntentEnum = z.enum(['ASK_EXPLANATION', 'ASK_EXAMPLES', 'OFF_TOPIC', 'OTHER']);
-const TrajectoryStatusEnum = z.enum(['ON_TRACK', 'STRUGGLING', 'UNKNOWN']);
-
-const MessageAnalysisOutputSchema = z.object({
+// Zod schema for the MessageAnalysis type
+const MessageAnalysisSchema = z.object({
   intent: z.object({
-    primary: IntentEnum.describe("The primary intent of the user."),
-    confidence: z.number().describe("Confidence score between 0 and 1."),
+    labels: z.array(z.string()),
+    primary: z.string(),
+    confidence: z.number(),
   }),
-  skills: z.array(z.string()).describe("List of technical topics or skills identified in the message."),
+  skills: z.object({
+    items: z.array(
+      z.object({
+        id: z.string(),
+        displayName: z.string().optional(),
+        confidence: z.number(),
+        role: z.enum(['FOCUS', 'SECONDARY', 'PREREQUISITE']).optional(),
+      })
+    ),
+  }),
   trajectory: z.object({
-    status: TrajectoryStatusEnum.describe("Assessment of whether the student is on track based on this interaction."),
-    reasoning: z.string().optional().describe("Brief explanation for the status."),
-  })
+    currentNodes: z.array(z.string()),
+    suggestedNextNodes: z.array(
+      z.object({
+        id: z.string(),
+        reason: z.string().optional(),
+        priority: z.number().optional(),
+      })
+    ),
+    status: z.enum([
+      'ON_TRACK',
+      'STRUGGLING',
+      'TOO_ADVANCED',
+      'REVIEW_NEEDED',
+      'NEW_TOPIC',
+      'UNKNOWN',
+    ]),
+  }),
+  metadata: z.object({
+    processedAt: z.string(),
+    modelVersion: z.string(),
+    threadId: z.string(),
+    messageId: z.string().nullable().optional(),
+    uid: z.string(),
+  }),
 });
 
-export type MessageAnalysisInput = z.infer<typeof MessageAnalysisInputSchema>;
-export type MessageAnalysisOutput = z.infer<typeof MessageAnalysisOutputSchema>;
+export async function analyzeMessage(
+  input: AnalyzeMessageRequest
+): Promise<MessageAnalysis> {
+  return analyzeMessageFlow(input);
+}
 
-const analysisPrompt = ai.definePrompt({
-  name: 'analyzeMessagePrompt',
-  input: { schema: MessageAnalysisInputSchema },
-  output: { schema: MessageAnalysisOutputSchema },
-  prompt: `
-    You are an advanced educational analytics engine.
-    Analyze the following student message to extract structured data about their intent, the skills they are discussing, and their learning trajectory status.
-
-    **Context (History):**
-    {{messageHistory}}
-
-    **Current Message:**
-    {{messageText}}
-
-    **Instructions:**
-    1. Classify the INTENT into one of: ASK_EXPLANATION, ASK_EXAMPLES, OFF_TOPIC, OTHER.
-    2. Extract key SKILLS or TOPICS mentioned (e.g., "Recursion", "Python Lists").
-    3. Assess the TRAJECTORY:
-       - 'ON_TRACK': User asks relevant questions or shows understanding.
-       - 'STRUGGLING': User expresses confusion, frustration, or repeats mistakes.
-       - 'UNKNOWN': Not enough info.
-  `,
-});
-
-export const analyzeMessageFlow = ai.defineFlow(
+const analyzeMessageFlow = ai.defineFlow(
   {
     name: 'analyzeMessageFlow',
-    inputSchema: MessageAnalysisInputSchema,
-    outputSchema: MessageAnalysisOutputSchema,
+    inputSchema: AnalyzeMessageRequestSchema,
+    outputSchema: MessageAnalysisSchema,
   },
-  async (input) => {
-    const { output } = await analysisPrompt(input);
-    return output!;
+  async (input): Promise<MessageAnalysis> => {
+    // 🔧 Placeholder implementation that matches the new MessageAnalysis type.
+    // Later we will replace this with a real LLM call + mapper.
+    return {
+      intent: {
+        labels: ['ASK_EXPLANATION'],
+        primary: 'ASK_EXPLANATION',
+        confidence: 0.95,
+      },
+      skills: {
+        items: [
+          {
+            id: 'bayes-theorem',
+            displayName: 'Bayes Theorem',
+            confidence: 0.9,
+            role: 'FOCUS',
+          },
+          {
+            id: 'probability',
+            displayName: 'Probability',
+            confidence: 0.98,
+            role: 'PREREQUISITE',
+          },
+        ],
+      },
+      trajectory: {
+        currentNodes: ['introduction-to-probability'],
+        suggestedNextNodes: [
+          {
+            id: 'bayes-theorem-explained',
+            reason: 'The user is asking a direct question about this topic.',
+            priority: 1,
+          },
+        ],
+        status: 'ON_TRACK',
+      },
+      metadata: {
+        processedAt: new Date().toISOString(),
+        modelVersion: 'ist-v1',
+        threadId: input.threadId,
+        messageId: input.messageId ?? null,
+        uid: 'user-placeholder', // TODO: wire to real uid from auth
+      },
+    };
   }
 );
