@@ -1,8 +1,7 @@
 
 import { getIstAnalysisEngine } from '@/lib/ist/engine';
 import { getIstAnalysisRepository } from '@/lib/ist/repository';
-import type { AnalyzeMessageRequest } from '../../../functions/src/types/analyzeMessage';
-import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
+import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
 
 export async function analyzeAndStoreIstForMessage(params: {
   threadId: string;

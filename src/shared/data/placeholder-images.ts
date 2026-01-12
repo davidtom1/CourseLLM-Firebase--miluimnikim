@@ -12,3 +12,4 @@ export const placeholderImages: ImagePlaceholder[] = data.placeholderImages;
 export const getPlaceholderImage = (id: string) => {
     return placeholderImages.find(img => img.id === id);
 }
+

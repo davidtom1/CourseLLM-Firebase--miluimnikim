@@ -1,4 +1,4 @@
-import type { Course, Student, StudentProgress, EngagementData } from './types';
+import type { Course, Student, StudentProgress, EngagementData } from '@/lib/types';
 
 export const students: Student[] = [
   { id: 'student-1', name: 'Alex Johnson', avatarUrl: 'https://i.pravatar.cc/150?u=student-1' },
@@ -66,3 +66,4 @@ export const engagementData: EngagementData[] = [
 ];
 
 export const getCourseById = (id: string) => courses.find(c => c.id === id);
+

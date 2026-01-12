@@ -8,11 +8,11 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Bot, User, Send, Quote, Loader } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { INITIAL_CHAT_MESSAGES, SOCRATIC_RESPONSE } from '@/lib/data';
 import { provideSocraticGuidance } from '@/ai/flows/provide-socratic-guidance';
 import type { ChatMessage } from '@/lib/types';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/hooks/use-toast';
 
 export function SocraticChat({ courseName }: { courseName: string }) {
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);

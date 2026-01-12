@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { TOPICS } from '@/lib/data';
 import type { Topic } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
 
 const masteryConfig = {

@@ -1,5 +1,5 @@
 
-import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
+import type { MessageAnalysis } from '@/shared/types';
 
 export interface IstAnalysisRepository {
   save(analysis: MessageAnalysis): Promise<void>;

@@ -2,8 +2,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
-import type { AnalyzeMessageRequest } from '../../../functions/src/types/analyzeMessage';
+import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
 
 // Zod schema for the AnalyzeMessageRequest type
 const AnalyzeMessageRequestSchema = z.object({

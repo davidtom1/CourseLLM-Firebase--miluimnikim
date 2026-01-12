@@ -12,7 +12,7 @@ import { TOPICS } from '@/lib/data';
 import type { QuizQuestion } from '@/lib/types';
 // Note: We're now using the DSPy service instead of the Genkit flow
 // import { generatePracticeQuiz } from '@/ai/flows/generate-practice-quiz';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/shared/hooks/use-toast';
 
 type QuizState = 'initial' | 'loading' | 'active' | 'submitted';
 

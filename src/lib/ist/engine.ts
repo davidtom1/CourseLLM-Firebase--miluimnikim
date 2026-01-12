@@ -1,5 +1,4 @@
-import type { AnalyzeMessageRequest } from '../../../functions/src/types/analyzeMessage';
-import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
+import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
 import { CallableIstAnalysisEngine } from './engineCallable';
 
 export interface IstAnalysisEngine {

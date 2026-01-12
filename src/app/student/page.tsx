@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { courses, studentProgress } from '@/lib/mock-data';
-import { getPlaceholderImage } from '@/lib/placeholder-images';
+import { courses, studentProgress } from '@/shared/data/mock-data';
+import { getPlaceholderImage } from '@/shared/data/placeholder-images';
 import {
   Card,
   CardContent,

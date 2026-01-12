@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Loader2, Sparkles, CheckCircle, AlertTriangle } from 'lucide-react';
-import { courses } from '@/lib/mock-data';
+import { courses } from '@/shared/data/mock-data';
 
 type AssessmentResult = {
   assessment: string;

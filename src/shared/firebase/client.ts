@@ -54,3 +54,4 @@ if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === 'true') {
 }
 
 export const analyzeMessageFn = httpsCallable(functions, 'analyzeMessage');
+

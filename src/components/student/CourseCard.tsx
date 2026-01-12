@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { Course } from '@/lib/types';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { placeholderImages as PlaceHolderImages } from '@/shared/data/placeholder-images';
 import { ArrowRight } from 'lucide-react';
 
 type CourseCardProps = {

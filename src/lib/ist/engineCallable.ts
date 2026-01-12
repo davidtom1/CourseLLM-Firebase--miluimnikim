@@ -1,9 +1,8 @@
 'use client';
 
 import { httpsCallable } from 'firebase/functions';
-import { functions } from '@/firebase';
-import type { AnalyzeMessageRequest } from '../../../functions/src/types/analyzeMessage';
-import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
+import { functions } from '@/shared/firebase/client';
+import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
 import type { IstAnalysisEngine } from './engine';
 
 export class CallableIstAnalysisEngine implements IstAnalysisEngine {

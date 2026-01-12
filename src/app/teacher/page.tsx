@@ -19,7 +19,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts"
-import { engagementData, studentProgress, courses, students } from "@/lib/mock-data"
+import { engagementData, studentProgress, courses, students } from "@/shared/data/mock-data"
 import { Users, BookOpen, MessageSquare } from "lucide-react"
 
 export default function TeacherDashboard() {
