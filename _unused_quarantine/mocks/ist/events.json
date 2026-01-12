@@ -1,0 +1,508 @@
+[
+  {
+    "id": "1",
+    "createdAt": "2025-12-11T10:03:52.591Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "i dont get binary tree",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is seeking help to understand binary trees.",
+    "skills": [
+      "binary tree concepts",
+      "tree traversal methods",
+      "binary tree operations",
+      "comparison with linked lists",
+      "Big-O notation in trees"
+    ],
+    "trajectory": [
+      "Review binary tree definitions and properties",
+      "Learn about tree traversal methods (in-order, pre-order, post-order)",
+      "Practice solving problems related to binary trees",
+      "Discuss the differences between binary trees and linked lists",
+      "Explore time complexity of binary tree operations"
+    ]
+  },
+  {
+    "id": "2",
+    "createdAt": "2025-12-11T10:12:21.864Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "please explain linkedLIst",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking for an explanation of linked lists.",
+    "skills": [
+      "linked list concepts",
+      "node structuring",
+      "linked list operations",
+      "comparison with arrays",
+      "Big-O notation in linked lists"
+    ],
+    "trajectory": [
+      "Review the definition and structure of linked lists.",
+      "Explore basic operations such as insertion and deletion.",
+      "Study the differences between linked lists and arrays.",
+      "Analyze time complexity of linked list operations with Big-O notation."
+    ]
+  },
+  {
+    "id": "3",
+    "createdAt": "2025-12-11T10:26:15.167Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "please explain binary search",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking for an explanation of binary search.",
+    "skills": [
+      "binary search algorithm",
+      "array operations",
+      "searching algorithms",
+      "Big-O notation",
+      "divide and conquer strategy"
+    ],
+    "trajectory": [
+      "1. Review the concept of binary search and its prerequisites like sorted arrays.",
+      "2. Discuss the steps involved in the binary search algorithm.",
+      "3. Analyze the time complexity of binary search",
+      "emphasizing Big-O notation.",
+      "4. Solve a few practical problems using binary search.",
+      "5. Compare binary search with linear search to understand its efficiency."
+    ]
+  },
+  {
+    "id": "4",
+    "createdAt": "2025-12-11T11:27:29.745Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "What is the time and space complexity of inserting an element at the beginning, in the middle, and at the end of a dynamic array? Explain why there is a difference.",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking about time and space complexity for inserting elements in a dynamic array.",
+    "skills": [
+      "time complexity",
+      "space complexity",
+      "dynamic arrays",
+      "Big-O notation",
+      "insert operations",
+      "comparison with linked lists"
+    ],
+    "trajectory": [
+      "Review the time and space complexity of dynamic array operations.",
+      "Understand the differences in insertion complexity compared to linked lists.",
+      "Explore examples of insertion at different positions in dynamic arrays.",
+      "Practice problems related to array operations and complexity analysis."
+    ]
+  },
+  {
+    "id": "5",
+    "createdAt": "2025-12-11T11:27:54.861Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "Given a long string, how would you check if it contains all characters of a smaller pattern string (order doesn’t matter)? Describe a solution and its time complexity.",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking how to check if a string contains all characters of another string and wants to know the time complexity of the solution.",
+    "skills": [
+      "string manipulation",
+      "algorithm design",
+      "Big-O notation",
+      "hashing",
+      "array operations"
+    ],
+    "trajectory": [
+      "1. Review string manipulation techniques and examples.",
+      "2. Study algorithms for checking character presence in strings",
+      "focusing on hashing techniques.",
+      "3. Analyze the time complexity of different approaches to ensure understanding of Big-O notation.",
+      "4. Practice problems related to character matching in strings using provided algorithms."
+    ]
+  },
+  {
+    "id": "6",
+    "createdAt": "2025-12-11T11:28:16.406Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "Explain the two-pointer technique on arrays. Give an example problem where it is useful and outline how the pointers move.",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the two-pointer technique on arrays with an example problem and how pointers move.",
+    "skills": [
+      "two-pointer technique",
+      "array operations",
+      "algorithm design",
+      "problem-solving",
+      "pointer manipulation"
+    ],
+    "trajectory": [
+      "Provide a detailed explanation of the two-pointer technique.",
+      "Present an example problem where this technique is commonly used, such as finding a pair of numbers that sum to a specific value.",
+      "Outline the step-by-step movement of the pointers in the example problem.",
+      "Discuss common variations or applications of the two-pointer technique."
+    ]
+  },
+  {
+    "id": "7",
+    "createdAt": "2025-12-11T11:30:53.966Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "Compare arrays and singly linked lists in terms of memory layout, random access, insertion, and deletion. When would you prefer a linked list over an array?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the differences between arrays and singly linked lists in terms of memory layout, access, insertion, deletion, and usage scenarios.",
+    "skills": [
+      "memory layout of arrays",
+      "memory layout of linked lists",
+      "random access in arrays",
+      "insertion in arrays and linked lists",
+      "deletion in arrays and linked lists",
+      "when to use linked lists over arrays"
+    ],
+    "trajectory": [
+      "Review differences between arrays and linked lists",
+      "Analyze memory efficiency of each data structure",
+      "Discuss practical scenarios where linked lists are preferred",
+      "Practice problems involving insertion and deletion in both structures",
+      "Explore more advanced topics in linked lists such as doubly linked lists"
+    ]
+  },
+  {
+    "id": "8",
+    "createdAt": "2025-12-11T11:31:17.211Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "How would you detect if a singly linked list has a cycle? Explain the algorithm, why it works, and its time and space complexity",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to learn how to detect a cycle in a singly linked list and understand the related algorithm and its complexities.",
+    "skills": [
+      "singly linked list",
+      "cycle detection algorithm",
+      "two-pointer technique",
+      "time complexity analysis",
+      "space complexity analysis",
+      "algorithm explanation"
+    ],
+    "trajectory": [
+      "Study the Floyd's Tortoise and Hare algorithm for cycle detection.",
+      "Practice a few problems on cycle detection in linked lists.",
+      "Review time and space complexity concepts related to algorithms.",
+      "Discuss differences between linked list operations and array operations.",
+      "Solve additional practice problems on linked lists."
+    ]
+  },
+  {
+    "id": "9",
+    "createdAt": "2025-12-11T11:31:40.608Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "Describe how to insert a new node after a given node in a singly linked list, and how to delete a given node (not the tail) when you only have a pointer to that node.",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand how to insert and delete nodes in a singly linked list.",
+    "skills": [
+      "singly linked lists",
+      "node insertion",
+      "node deletion",
+      "pointer manipulation",
+      "algorithmic complexity"
+    ],
+    "trajectory": [
+      "Review the structure of singly linked lists and their operations.",
+      "Study examples of inserting a node after a given node.",
+      "Learn the method for deleting a node when provided only a pointer to that node.",
+      "Solve practice problems on insertion and deletion in linked lists.",
+      "Discuss common pitfalls and questions regarding linked list operations."
+    ]
+  },
+  {
+    "id": "10",
+    "createdAt": "2025-12-11T14:46:38.892Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "What is the time and space complexity of inserting an element at the beginning, in the middle, and at the end of a dynamic array? Explain why there is a difference.",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student seeks to understand time and space complexity for dynamic array insertion.",
+    "skills": [
+      "time complexity analysis",
+      "space complexity analysis",
+      "dynamic arrays",
+      "insertion operations",
+      "Big-O notation"
+    ],
+    "trajectory": [
+      "Review time and space complexity for dynamic arrays",
+      "Understand specific insertion scenarios: beginning, middle, end",
+      "Study the impact of array resizing on complexity",
+      "Examine related problems involving dynamic arrays",
+      "Practice coding examples of dynamic array operations"
+    ]
+  },
+  {
+    "id": "11",
+    "createdAt": "2025-12-11T15:02:18.477Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "What is the time and space complexity of inserting an element at the beginning, in the middle, and at the end of a dynamic array? Explain why there is a difference.",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the time and space complexity of inserting elements in a dynamic array.",
+    "skills": [
+      "time complexity analysis",
+      "space complexity analysis",
+      "dynamic arrays",
+      "insertion operations",
+      "Big-O notation"
+    ],
+    "trajectory": [
+      "Review the time complexity for inserting at the beginning, middle, and end of dynamic arrays.",
+      "Investigate differences in complexity between dynamic arrays and linked lists.",
+      "Work on examples that illustrate insertion operations in dynamic arrays.",
+      "Practice Big-O notation problems focusing on various operations in data structures.",
+      "Explore additional resources on complexity analysis for better understanding."
+    ]
+  },
+  {
+    "id": "12",
+    "createdAt": "2025-12-11T15:14:18.843Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "You are given an array of integers and a target sum k. How would you find the length of the longest subarray whose sum is exactly k? Describe an efficient approach and its time complexity.",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand how to find the longest subarray with a specific sum in an array of integers.",
+    "skills": [
+      "subarray",
+      "target sum",
+      "prefix sum technique",
+      "hash map",
+      "time complexity analysis",
+      "array manipulation"
+    ],
+    "trajectory": [
+      "Study the prefix sum technique for subarrays.",
+      "Learn how to implement a hash map to track prefix sums.",
+      "Practice problems involving finding subarrays with a given sum.",
+      "Analyze the time complexity of the approach.",
+      "Review related concepts in arrays."
+    ]
+  },
+  {
+    "id": "13",
+    "createdAt": "2025-12-11T15:15:03.614Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "“Given a string, how would you check if it is a palindrome when you are allowed to ignore non-alphanumeric characters and case (e.g., A man, a plan, a canal: Panama)? Explain your algorithm and why it works.”",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to learn how to check if a string is a palindrome while ignoring non-alphanumeric characters and case.",
+    "skills": [
+      "string manipulation",
+      "palindrome checking",
+      "algorithm design",
+      "regex (for non-alphanumeric handling)",
+      "case normalization"
+    ],
+    "trajectory": [
+      "Study string manipulation techniques to handle different character cases.",
+      "Review algorithms for checking palindromes, discussing edge cases and optimizations.",
+      "Implement a solution in code and perform a complexity analysis for the algorithm.",
+      "Discuss how to handle non-alphanumeric characters, possibly using regular expressions.",
+      "Practice additional problems regarding string algorithms to solidify understanding."
+    ]
+  },
+  {
+    "id": "14",
+    "createdAt": "2025-12-11T15:15:15.545Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "How would you reverse a singly linked list in place? Describe the algorithm step by step and analyze its time and space complexity.”",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to learn how to reverse a singly linked list in place and analyze its complexities.",
+    "skills": [
+      "singly linked lists",
+      "pointer manipulation",
+      "algorithm design",
+      "time complexity analysis",
+      "space complexity analysis"
+    ],
+    "trajectory": [
+      "Understand the definition and structure of singly linked lists.",
+      "Learn the algorithm for reversing a singly linked list step by step.",
+      "Analyze the time and space complexity of the reversal algorithm.",
+      "Practice coding the reversal algorithm in a programming environment.",
+      "Review additional linked list operations to reinforce learning."
+    ]
+  },
+  {
+    "id": "15",
+    "createdAt": "2025-12-11T15:16:23.232Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "“You are given a sorted singly linked list. How would you remove all duplicate values so that each value appears only once? Explain your approach and its time complexity.”",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to learn how to remove duplicates from a sorted singly linked list and understand the time complexity of the approach.",
+    "skills": [
+      "singly linked lists",
+      "duplicate removal",
+      "algorithm design",
+      "time complexity analysis",
+      "pointer manipulation"
+    ],
+    "trajectory": [
+      "Explain the approach to remove duplicates from a sorted singly linked list.",
+      "Discuss the time complexity of the solution.",
+      "Provide example code to demonstrate the solution.",
+      "Engage in practice problems focusing on linked lists and duplicate removal.",
+      "Explore additional operations on linked lists such as insertion and deletion."
+    ]
+  },
+  {
+    "id": "16",
+    "createdAt": "2025-12-13T13:42:21.559Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "I’m confused about time complexity — what’s the difference between O(n), O(n log n), and O(n²)?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the differences between various time complexities: O(n), O(n log n), and O(n²).",
+    "skills": [
+      "time complexity analysis",
+      "Big-O notation",
+      "algorithm efficiency",
+      "algorithm performance comparison",
+      "complexity classes"
+    ],
+    "trajectory": [
+      "Review the definitions of O(n), O(n log n), and O(n²) with examples.",
+      "Explore how time complexity affects algorithm performance.",
+      "Analyze time complexity for a few common algorithms.",
+      "Practice with problems that involve different time complexities."
+    ]
+  },
+  {
+    "id": "17",
+    "createdAt": "2025-12-13T13:43:16.346Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "Can you give me a concrete example: why is Merge Sort O(n log n) but Insertion Sort can be O(n²)?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants a concrete example demonstrating the time complexity differences between Merge Sort and Insertion Sort.",
+    "skills": [
+      "Merge Sort",
+      "Insertion Sort",
+      "time complexity analysis",
+      "Big-O notation",
+      "algorithm comparison"
+    ],
+    "trajectory": [
+      "Provide an example of Merge Sort implementation and explain its O(n log n) performance.",
+      "Illustrate Insertion Sort with a specific case showing its O(n²) behavior.",
+      "Discuss the cases when each algorithm is preferred based on input characteristics.",
+      "Review time complexity concepts to solidify understanding.",
+      "Practice with additional sorting algorithms and their complexities."
+    ]
+  },
+  {
+    "id": "18",
+    "createdAt": "2025-12-13T13:43:39.967Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "Now if I have an array that’s almost sorted, which sorting algorithm would you choose and why",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking for recommendations on sorting algorithms for almost sorted arrays and the reasoning behind the choice.",
+    "skills": [
+      "sorting algorithms",
+      "time complexity analysis",
+      "Merge Sort",
+      "Insertion Sort",
+      "Big-O notation",
+      "algorithm efficiency"
+    ],
+    "trajectory": [
+      "Review the properties of commonly used sorting algorithms such as Merge Sort and Insertion Sort.",
+      "Study how time complexity affects algorithm performance, particularly in nearly sorted datasets.",
+      "Complete exercises on selecting appropriate sorting algorithms based on input conditions.",
+      "Analyze the efficiency of chosen algorithms on sample almost sorted arrays."
+    ]
+  },
+  {
+    "id": "19",
+    "createdAt": "2025-12-22T10:56:05.185Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "please explaim linked list",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand how linked lists work.",
+    "skills": [
+      "linked lists",
+      "node structure",
+      "pointer manipulation",
+      "traversal",
+      "insertions and deletions",
+      "memory management"
+    ],
+    "trajectory": [
+      "Read the module content on linked lists",
+      "Review examples of linked list operations (insertions and deletions)",
+      "Practice implementing a simple linked list in code",
+      "Work through problems on linked list traversal and manipulating nodes"
+    ]
+  },
+  {
+    "id": "20",
+    "createdAt": "2026-01-12T16:33:25.962Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "explain to me about linked list",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student is asking for an explanation of linked lists.",
+    "skills": [
+      "linked lists",
+      "node structure",
+      "pointer manipulation",
+      "traversal",
+      "insertions and deletions"
+    ],
+    "trajectory": [
+      "Review the structure of linked lists with examples",
+      "Explore node traversal and how to move through a linked list",
+      "Learn about inserting and deleting nodes within a linked list",
+      "Practice coding basic linked list operations",
+      "Solve problems related to linked lists to solidify understanding"
+    ]
+  },
+  {
+    "id": "21",
+    "createdAt": "2026-01-12T17:34:42.255Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "What is a Binary Search Tree?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to learn about Binary Search Trees.",
+    "skills": [
+      "Binary Search Trees",
+      "tree traversal",
+      "node structure",
+      "insertions and deletions",
+      "search operations"
+    ],
+    "trajectory": [
+      "Read foundational material on Binary Search Trees",
+      "Watch a tutorial on tree traversals and operations",
+      "Practice problems related to Binary Search Trees",
+      "Discuss with the tutor any points of confusion or questions"
+    ]
+  },
+  {
+    "id": "22",
+    "createdAt": "2026-01-12T17:36:06.832Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "How is it different from a Heap?",
+    "courseContext": "Title: Module 1: Arrays & Strings\nContent: Markdown content for Arrays and Strings. Covers operations, complexity analysis, and common problems.\n\n---\n\nTitle: Module 2: Linked Lists\nContent: A document...",
+    "intent": "The student wants to understand the difference between a heap and another data structure, likely linked lists given the recent context.",
+    "skills": [
+      "heap data structure",
+      "linked lists",
+      "memory management",
+      "time complexity",
+      "algorithm comparison"
+    ],
+    "trajectory": [
+      "Review the properties and operations of heaps.",
+      "Compare the structure and use cases of heaps and linked lists.",
+      "Practice coding examples involving both heaps and linked lists.",
+      "Analyze the time complexities of operations in heaps versus linked lists.",
+      "Explore applications for heaps in algorithms, such as priority queues."
+    ]
+  }
+]

@@ -330,6 +330,130 @@ Validate that **Genkit / Gemini errors** (e.g., 429/503) do **not** break the IS
 
 ---
 
+## 8. Test Scenario 6 – Teacher IST Class Report (Aggregated, JSON-First)
+
+### 8.1 Steps
+
+1. With all services running (Next.js dev server, emulators), open:
+
+   ```text
+   http://localhost:9002/teacher/courses/cs-demo-101?view=ist-report
+   ```
+
+2. In the Teacher UI:
+   - Navigate via sidebar or directly to the **“Courses”** section.
+   - Open the **“Data Structures & Algorithms”** course (`cs-demo-101`).
+   - Switch to the **“IST Class Report”** tab.
+3. Click the button:
+
+   ```text
+   Generate IST Class Report
+   ```
+
+4. Wait for the report to generate (a short loading state) and ensure no errors appear in the browser console or Next.js dev logs.
+
+### 8.2 Expected Results – UI
+
+- The IST Class Report section renders a **course-level aggregated dashboard** (no per-student details), including:
+  - **Executive Summary KPI cards** (total events, events with skills, unique skills, total skill assignments, averages, top skill, top-10 concentration, observation window).
+  - **Trends (Last 7 vs Previous 7 days)** section with:
+    - A small comparison table for events and skill assignments.
+    - Two lists: **Rising skills** and **Declining skills**.
+  - **Skills** section with:
+    - A **“Search skills…”** input that filters both **Top Skills** and **Gaps**.
+    - A **Top Skills** table (up to 10 skills, or filtered subset).
+    - A **Gaps** table with a toggle between **“Show first 20”** and **“Show all (N)”**.
+  - **Data Quality** cards summarizing how many events are missing or have malformed `skills` data.
+- No raw **student identifiers** or **utterance text** are rendered anywhere in the report:
+  - No `userId`, `threadId`, or `messageId`.
+  - No raw `utterance` or chat text.
+- The copy explicitly frames the view as a **course-level aggregated IST report**.
+
+### 8.3 Data Source (JSON-First Mock Dataset)
+
+- The current implementation reads from a **JSON-first mock dataset**:
+  - Fetches `GET /mocks/ist/teacher-class-events.json` from `public/mocks/ist/teacher-class-events.json`.
+  - Uses:
+
+    ```ts
+    fetch("/mocks/ist/teacher-class-events.json", { cache: "no-store" })
+    ```
+
+  - Filters the mock `IstEventForReport[]` in-memory to events where `courseId === "cs-demo-101"`.
+- No live Data Connect queries are performed yet for this Teacher UI; the report is **JSON-backed** while analytics code remains DataConnect-agnostic.
+
+### 8.4 Expected Metrics (Current Mock Dataset – cs-demo-101)
+
+For the existing mock dataset (as of the latest snapshot), after clicking **Generate IST Class Report** for `cs-demo-101`, you should see approximate values:
+
+- **Core metrics**
+  - `totalEvents` ≈ **100**
+  - `eventsWithSkills` ≈ **90** (**90.0%** of events)
+  - `uniqueSkillsCount` ≈ **74**
+  - `totalSkillAssignments` ≈ **183** (per-event, de-duplicated, normalized skills)
+- **Coverage**
+  - Top skill **“recursion”** share ≈ **6.6%** of all skill assignments.
+  - **Top 10 concentration** ≈ **40.4%** of all skill assignments.
+- **Trends (Last 7 vs Previous 7 days)**
+  - `last7Days`: **70 events**, **122** skill assignments.
+  - `prev7Days`: **30 events**, **61** skill assignments.
+  - Relative deltas (approximate):
+    - Events: **+133.3%** vs previous 7 days.
+    - Skill assignments: **+100%** vs previous 7 days.
+- **Data quality**
+  - `eventsMissingSkillsField` ≈ **4**
+  - `eventsEmptySkillsArray` ≈ **4**
+  - `invalidSkillEntriesDropped` ≈ **4**
+  - `eventsSkillsNotArray` ≈ **0** (non-array skills should not appear in this dataset).
+
+You do **not** need to match these exact numbers for every run, but they should be in the same ballpark if you have not changed the JSON mock file.
+
+### 8.5 Expected Logs / Observability
+
+- **Browser DevTools – Network tab**:
+  - A `GET /mocks/ist/teacher-class-events.json` request when clicking **Generate IST Class Report`.
+  - Response should be HTTP 200 with a JSON array of mock events.
+- **Browser DevTools – Console**:
+  - No unhandled exceptions.
+  - On failure cases, you may see a logged error from `TeacherClassIstReport` such as:
+
+    ```text
+    [TeacherClassIstReport] Failed to generate report ...
+    ```
+
+    but for this happy-path test, the console should remain clean.
+- **Next.js dev server logs**:
+  - Normal page navigation logs for `/teacher/courses/cs-demo-101?view=ist-report`.
+  - No reappearance of the dynamic params warning:
+
+    ```text
+    params.courseId must be awaited
+    ```
+
+### 8.6 Privacy Constraints (Must Hold)
+
+- The Teacher IST Class Report is strictly **aggregated at course level**:
+  - No **`userId`**, **`threadId`**, or **`messageId`** values may be rendered anywhere in the UI.
+  - No raw **student `utterance`** or message text may appear – only normalized skills and derived aggregates.
+- All surfaced metrics (counts, shares, trends, gaps, data quality) must be interpretable **without** exposing any per-student identity or raw messages.
+
+### 8.7 Notes / Common Issues
+
+- **Next.js dynamic params warning**:
+  - Previously, navigation to the Teacher course page could produce:
+
+    ```text
+    params.courseId must be awaited
+    ```
+
+  - This has been fixed by making `app/teacher/courses/[courseId]/page.tsx` `async` and `await`ing `params`.  
+  - **Expected behavior now**: No such warning or error appears in the Next.js dev console when visiting `/teacher/courses/cs-demo-101?view=ist-report`.
+- **Jest tests note**:
+  - Jest unit tests exist for the analytics helper (`teacherIstReport.test.ts`), but `package.json` may not define an `npm test` script yet (`Missing script: "test"`).  
+  - This is **not** part of the manual UI test run; it is only a note for developers wiring up automated tests later.
+
+---
+
 ## 8. Where to See Each Result (Summary Table)
 
 | Feature                                   | Where to see it                                                |
@@ -340,6 +464,7 @@ Validate that **Genkit / Gemini errors** (e.g., 429/503) do **not** break the IS
 | IST history loaded into context          | Next.js logs (`[IST][Context] Loaded recent ...`) + DSPy logs  |
 | Firestore write (thread/message)         | Firestore Emulator UI (`http://127.0.0.1:4000/`)               |
 | Data Connect emulator status             | Firebase emulator logs, `/ist-dev/dataconnect` UI              |
+| Teacher IST aggregated report            | Teacher UI (`/teacher/courses/cs-demo-101?view=ist-report`)    |
 
 ---
 
@@ -351,6 +476,8 @@ These IST UI tests validate that:
 - **IST history and chat history** are loaded from Data Connect and passed into DSPy as `ist_history` and `chat_history`.
 - **Data Connect** is the primary store for IST events, with the `/ist-dev/dataconnect` page providing a clear visual for developers.
 - **Fallback behavior** for Gemini/Genkit errors keeps the UI stable while IST + Data Connect processing continues.
+- **Teacher IST Class Report** aggregates course-level skill signals (counts, shares, trends, gaps, data quality) without exposing any student identifiers or raw utterances.
+- **Teacher-side report generation** works end-to-end in the UI: fetch JSON mock dataset → compute v2 analytics → render the aggregated IST class report with expected KPIs and trends.
 
 This test plan should be used by developers and TAs to validate changes to the IST pipeline, especially when iterating on Data Connect integration, DSPy prompts, or UI behavior.
 
