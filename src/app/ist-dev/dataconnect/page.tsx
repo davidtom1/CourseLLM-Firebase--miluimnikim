@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { listIstEventsForUserAndCourse } from "@/lib/dataConnect/istEventsWebClient";
+import { listIstEventsForUserAndCourse } from "@/shared/lib/dataConnect/istEventsWebClient";
 
 type IstEvent = {
   id: string;

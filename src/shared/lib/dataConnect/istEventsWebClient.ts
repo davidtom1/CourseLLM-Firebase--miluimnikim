@@ -1,4 +1,4 @@
-// src/lib/dataConnect/istEventsWebClient.ts
+// src/shared/lib/dataConnect/istEventsWebClient.ts
 
 "use server";
 
