@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from 'react';
-import { generatePersonalizedAssessment } from '@/ai/flows/personalized-learning-assessment';
+import { generatePersonalizedAssessment } from '@/features/ai/flows/personalized-learning-assessment';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';

@@ -11,3 +11,4 @@ export const ai = genkit({
   ],
   model: courseModel,
 });
+

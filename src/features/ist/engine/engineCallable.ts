@@ -19,3 +19,4 @@ export class CallableIstAnalysisEngine implements IstAnalysisEngine {
     return result.data;
   }
 }
+

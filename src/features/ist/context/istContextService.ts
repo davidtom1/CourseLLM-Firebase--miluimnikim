@@ -9,8 +9,8 @@
  * STEP 4: Now populates both recentIstEvents and recentChatMessages from repositories when userId is available.
  */
 
-import type { IstContext, ChatMessage, IstEvent } from './types';
-import { getIstEventRepository, getChatHistoryRepository } from './repositories';
+import type { IstContext, ChatMessage, IstEvent } from '../types';
+import { getIstEventRepository, getChatHistoryRepository } from '../repositories';
 
 /**
  * Check if IST demo mode is enabled.

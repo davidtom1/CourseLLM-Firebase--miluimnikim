@@ -8,7 +8,7 @@
  * - PersonalizedAssessmentOutput - The return type for the generatePersonalizedAssessment function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai} from '@/features/ai/config/genkit';
 import {z} from 'genkit';
 
 const PersonalizedAssessmentInputSchema = z.object({
@@ -88,3 +88,4 @@ const personalizedAssessmentFlow = ai.defineFlow(
     return output!;
   }
 );
+

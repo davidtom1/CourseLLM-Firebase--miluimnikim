@@ -1,6 +1,6 @@
 'use server';
 
-import { ai } from '@/ai/genkit';
+import { ai } from '@/features/ai/config/genkit';
 import { z } from 'zod';
 import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
 
@@ -116,3 +116,4 @@ const analyzeMessageFlow = ai.defineFlow(
     };
   }
 );
+

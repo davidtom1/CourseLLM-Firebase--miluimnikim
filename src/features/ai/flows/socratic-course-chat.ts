@@ -3,10 +3,10 @@
 /**
  * @fileOverview Implements a Socratic chat flow for students to interact with course content.
  */
-import { courseModel } from '../genkit'; 
-import { ai } from '@/ai/genkit';
+import { courseModel } from '../config/genkit'; 
+import { ai } from '@/features/ai/config/genkit';
 import { z } from 'genkit';
-import { extractAndStoreIST } from '@/lib/ist/extractIST';
+import { extractAndStoreIST } from '@/features/ist/extraction/extractIST';
 
 const SocraticCourseChatInputSchema = z.object({
   courseMaterial: z
@@ -115,3 +115,4 @@ const socraticCourseChatFlow = ai.defineFlow(
     return output!;
   }
 );
+

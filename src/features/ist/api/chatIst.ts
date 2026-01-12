@@ -1,6 +1,6 @@
 
-import { getIstAnalysisEngine } from '@/lib/ist/engine';
-import { getIstAnalysisRepository } from '@/lib/ist/repository';
+import { getIstAnalysisEngine } from '../engine/engine';
+import { getIstAnalysisRepository } from '../repositories/repository';
 import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
 
 export async function analyzeAndStoreIstForMessage(params: {
@@ -29,3 +29,4 @@ export async function analyzeAndStoreIstForMessage(params: {
 
   return analysis;
 }
+

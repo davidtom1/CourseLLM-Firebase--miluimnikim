@@ -6,9 +6,9 @@
  * Storage failures are non-fatal and only logged - they won't block the chat flow.
  */
 
-import { getIstEventRepository } from './repositories';
-import { getIstContextForIstExtraction } from './istContextService';
-import type { IstContext } from './types';
+import { getIstEventRepository } from '../repositories';
+import { getIstContextForIstExtraction } from '../context/istContextService';
+import type { IstContext } from '../types';
 
 interface ISTResult {
   intent: string;
@@ -120,3 +120,4 @@ export async function extractAndStoreIST(params: ExtractISTParams): Promise<ISTR
     return null;
   }
 }
+

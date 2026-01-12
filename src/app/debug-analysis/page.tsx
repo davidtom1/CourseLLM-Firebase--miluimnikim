@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
-import { getIstAnalysisEngine } from '@/lib/ist/engine';
-import { getIstAnalysisRepository } from '@/lib/ist/repository';
+import { getIstAnalysisEngine } from '@/features/ist/engine/engine';
+import { getIstAnalysisRepository } from '@/features/ist/repositories/repository';
 
 export default function DebugAnalysisPage() {
   const [analysis, setAnalysis] = useState<MessageAnalysis | null>(null);

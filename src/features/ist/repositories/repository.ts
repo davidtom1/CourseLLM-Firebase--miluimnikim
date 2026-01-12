@@ -51,3 +51,4 @@ export function getIstAnalysisRepository(): IstAnalysisRepository {
   }
   return singletonRepo;
 }
+
