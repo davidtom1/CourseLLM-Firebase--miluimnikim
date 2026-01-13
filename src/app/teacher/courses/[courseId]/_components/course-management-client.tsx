@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Course } from "@/lib/types";
+import type { Course } from "@/shared/types/domain";
 import { FileText, Presentation, Upload, Trash2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/shared/hooks/use-toast";
 import { TeacherClassIstReport } from "./TeacherClassIstReport";
 
 export function CourseManagementClient({ course: initialCourse }: { course: Course }) {

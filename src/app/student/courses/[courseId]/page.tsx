@@ -1,4 +1,4 @@
-import { getCourseById } from '@/lib/mock-data';
+import { getCourseById } from '@/shared/data/mock-data';
 import { notFound } from 'next/navigation';
 import {
   Card,

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase';
-import type { MessageAnalysis } from '../../functions/src/types/messageAnalysis';
+import { db } from '@/shared/firebase/client';
+import type { MessageAnalysis } from '@/shared/types';
 
 type IntentInspectorProps = {
   threadId: string;

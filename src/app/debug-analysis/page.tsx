@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { MessageAnalysis } from '../../../functions/src/types/messageAnalysis';
-import type { AnalyzeMessageRequest } from '../../../functions/src/types/analyzeMessage';
-import { getIstAnalysisEngine } from '@/lib/ist/engine';
-import { getIstAnalysisRepository } from '@/lib/ist/repository';
+import type { AnalyzeMessageRequest, MessageAnalysis } from '@/shared/types';
+import { getIstAnalysisEngine } from '@/features/ist/engine/engine';
+import { getIstAnalysisRepository } from '@/features/ist/repositories/repository';
 
 export default function DebugAnalysisPage() {
   const [analysis, setAnalysis] = useState<MessageAnalysis | null>(null);

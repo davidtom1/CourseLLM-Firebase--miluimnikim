@@ -1,16 +1,16 @@
 "use client";
 
-import { socraticCourseChat } from "@/ai/flows/socratic-course-chat";
+import { socraticCourseChat } from "@/features/ai/flows/socratic-course-chat";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { Bot, Loader2, Send } from "lucide-react";
 import { useState, useRef, useEffect, useTransition } from "react";
 import type { FormEvent } from "react";
-import { analyzeAndStoreIstForMessage } from "@/lib/ist/chatIst";
+import { analyzeAndStoreIstForMessage } from "@/features/ist/api/chatIst";
 import IntentInspector from "@/components/IntentInspector";
 
 type Message = {

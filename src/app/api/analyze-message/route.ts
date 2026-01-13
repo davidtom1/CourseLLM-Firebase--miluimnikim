@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { analyzeMessage } from '@/ai/flows/analyze-message';
-import type { AnalyzeMessageRequest } from '../../../../functions/src/types/analyzeMessage';
+import { analyzeMessage } from '@/features/ai/flows/analyze-message';
+import type { AnalyzeMessageRequest } from '@/shared/types';
 
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as AnalyzeMessageRequest;

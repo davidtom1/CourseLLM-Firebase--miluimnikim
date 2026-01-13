@@ -1,4 +1,4 @@
-import { CourseCard } from '@/components/student/CourseCard';
+import { CourseCard } from '@/features/student/components/CourseCard';
 import { COURSES } from '@/lib/data';
 
 export default function StudentDashboard() {
