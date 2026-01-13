@@ -117,27 +117,3 @@ describe("computeTeacherIstClassReportV2 – trends", () => {
     expect(decliningB?.prev7Count).toBe(2);
   });
 });
-
-*** End Patch}]}*** End Patch
-
-*** End Patch
-
-*** End Patch}]}*** End Patch
-
-*** End Patch
-
-*** End Patch}]}*** End Patch
-
-*** End Patch
-
-*** End Patch}]}*** End Patch
-
-*** End Patch
-
-*** End Patch}]}*** End Patch
-
-*** End Patch
-
-*** End Patch}]}*** End Patch
-
-

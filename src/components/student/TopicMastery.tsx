@@ -33,7 +33,7 @@ export function TopicMastery() {
       <CardContent>
         <ul className="space-y-3">
           {TOPICS.map((topic: Topic) => {
-            const config = masteryConfig[topic.mastery];
+            const config = masteryConfig[topic.mastery as keyof typeof masteryConfig];
             return (
               <li key={topic.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                 <span className="font-medium">{topic.name}</span>

@@ -18,8 +18,28 @@ const AnalyzeMessageRequestSchema = z.object({
 // Zod schema for the MessageAnalysis type
 const MessageAnalysisSchema = z.object({
   intent: z.object({
-    labels: z.array(z.string()),
-    primary: z.string(),
+    labels: z.array(z.enum([
+      'ASK_EXPLANATION',
+      'ASK_EXAMPLES',
+      'ASK_STEP_BY_STEP_HELP',
+      'ASK_QUIZ',
+      'ASK_SUMMARY',
+      'ASK_WHAT_TO_LEARN_NEXT',
+      'META_SYSTEM_HELP',
+      'OFF_TOPIC',
+      'OTHER',
+    ])),
+    primary: z.enum([
+      'ASK_EXPLANATION',
+      'ASK_EXAMPLES',
+      'ASK_STEP_BY_STEP_HELP',
+      'ASK_QUIZ',
+      'ASK_SUMMARY',
+      'ASK_WHAT_TO_LEARN_NEXT',
+      'META_SYSTEM_HELP',
+      'OFF_TOPIC',
+      'OTHER',
+    ]),
     confidence: z.number(),
   }),
   skills: z.object({

@@ -114,7 +114,7 @@ export function SocraticChat({ courseName }: { courseName: string }) {
                         </AccordionTrigger>
                         <AccordionContent>
                           <ul className="list-disc pl-6 text-sm text-muted-foreground space-y-1">
-                            {message.citations.map((citation, index) => (
+                            {message.citations?.map((citation: string, index: number) => (
                               <li key={index}>{citation}</li>
                             ))}
                           </ul>

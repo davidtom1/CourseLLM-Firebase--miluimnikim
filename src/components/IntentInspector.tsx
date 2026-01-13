@@ -47,7 +47,7 @@ export default function IntentInspector({
             setAnalysis(null);
           }
         },
-        (err) => {
+        (err: { code?: string; message?: string }) => {
           console.error('[IntentInspector] Firestore onSnapshot error:', err);
           const msg = err && (err.code ? `${err.code}: ${err.message}` : err.message) ? `${err.code ?? ''} ${err.message ?? String(err)}`.trim() : 'Unknown Firestore error';
           setError(msg);
@@ -57,7 +57,7 @@ export default function IntentInspector({
       );
     } catch (e) {
       console.error('[IntentInspector] Error subscribing to snapshot:', e);
-      setError(String((e && (e.message || e)) || 'Unknown error'));
+      setError(String((e && ((e as { message?: string }).message || e)) || 'Unknown error'));
       setAnalysis(null);
       setLoading(false);
     }

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { Course } from '@/lib/types';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { placeholderImages } from '@/lib/placeholder-images';
 import { ArrowRight } from 'lucide-react';
 
 type CourseCardProps = {
@@ -18,7 +18,7 @@ type CourseCardProps = {
 };
 
 export function CourseCard({ course }: CourseCardProps) {
-  const placeholder = PlaceHolderImages.find((p) => p.id === course.image);
+  const placeholder = placeholderImages.find((p: { id: string }) => p.id === course.image);
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all hover:shadow-lg">

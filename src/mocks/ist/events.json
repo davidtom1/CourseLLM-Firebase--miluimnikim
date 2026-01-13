@@ -849,5 +849,48 @@
       "Explore how cover flow is used in user interface design.",
       "Look for tutorials or resources on implementing cover flow in applications."
     ]
+  },
+  {
+    "id": "40",
+    "createdAt": "2025-12-26T17:05:17.670Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "hi",
+    "courseContext": "Title: Week 1: Introduction\nContent: This is the content for the week 1 PDF. It covers basic syntax, variables, and data types in Python. We will learn how to write our first \"Hello, World!\" program.\n...",
+    "intent": "The student is greeting and showing interest in course content.",
+    "skills": [
+      "Python programming",
+      "basic syntax",
+      "variables",
+      "data types",
+      "linked lists"
+    ],
+    "trajectory": [
+      "Review Week 1 PDF content on basic syntax, variables, and data types",
+      "Practice writing simple Python programs",
+      "Complete exercises on linked lists",
+      "Seek clarification on any specific topics in the Week 1 content"
+    ]
+  },
+  {
+    "id": "41",
+    "createdAt": "2025-12-26T17:06:26.334Z",
+    "userId": "demo-user-1",
+    "courseId": "cs-demo-101",
+    "utterance": "how do u say string in python",
+    "courseContext": "Title: Week 1: Introduction\nContent: This is the content for the week 1 PDF. It covers basic syntax, variables, and data types in Python. We will learn how to write our first \"Hello, World!\" program.\n...",
+    "intent": "The student is asking how to say \"string\" in Python.",
+    "skills": [
+      "Python programming",
+      "data types",
+      "variables",
+      "basic syntax"
+    ],
+    "trajectory": [
+      "Review the definition of data types in Python",
+      "Practice creating and manipulating strings in Python",
+      "Explore Python's built-in string methods",
+      "Write a simple program that uses strings"
+    ]
   }
 ]

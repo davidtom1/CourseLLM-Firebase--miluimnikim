@@ -1,10 +1,11 @@
 import React from 'react';
-import AnalysisDemo from './pages-backup-temp/AnalysisDemo';
+// import AnalysisDemo from './pages-backup-temp/AnalysisDemo';
 
 function App() {
   return (
     <div className="App">
-      <AnalysisDemo />
+      {/* <AnalysisDemo /> */}
+      <div>App placeholder</div>
     </div>
   );
 }

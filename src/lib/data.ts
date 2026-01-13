@@ -3,15 +3,27 @@ import type { Course, Topic, ChatMessage, QuizQuestion } from './types';
 export const COURSES: Course[] = [
   {
     id: 'cs101',
+    title: 'CS 101: Data Structures',
     name: 'CS 101: Data Structures',
     description: 'An introductory course to fundamental data structures and algorithms.',
+    imageId: 'course_data_structures',
     image: 'course_data_structures',
+    materials: [],
+    learningObjectives: '',
+    learningSkills: '',
+    learningTrajectories: '',
   },
   {
     id: 'cs202',
+    title: 'CS 202: Operating Systems',
     name: 'CS 202: Operating Systems',
     description: 'Learn the core concepts of modern operating systems.',
+    imageId: 'course_operating_systems',
     image: 'course_operating_systems',
+    materials: [],
+    learningObjectives: '',
+    learningSkills: '',
+    learningTrajectories: '',
   },
 ];
 

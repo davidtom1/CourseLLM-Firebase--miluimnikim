@@ -15,7 +15,7 @@ export default function CoursePage({ params }: { params: { courseId: string } })
 
   return (
     <div className="flex flex-col">
-       <h1 className="text-3xl font-bold tracking-tight mb-6">{course.name}</h1>
+       <h1 className="text-3xl font-bold tracking-tight mb-6">{course.name || course.title}</h1>
       <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Tabs defaultValue="chat">
@@ -30,7 +30,7 @@ export default function CoursePage({ params }: { params: { courseId: string } })
               </TabsTrigger>
             </TabsList>
             <TabsContent value="chat" className="mt-6">
-              <SocraticChat courseName={course.name} />
+              <SocraticChat courseName={course.name || course.title} />
             </TabsContent>
             <TabsContent value="quiz" className="mt-6">
               <PracticeQuiz />

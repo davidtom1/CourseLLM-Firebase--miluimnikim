@@ -174,7 +174,7 @@ export function PracticeQuiz() {
                 </p>
                 <RadioGroup onValueChange={(value) => handleAnswerChange(q.id, value)}>
                   <div className="space-y-2">
-                    {q.options.map((option) => (
+                    {q.options.map((option: string) => (
                       <div key={option} className="flex items-center space-x-2">
                         <RadioGroupItem value={option} id={`${q.id}-${option}`} />
                         <Label htmlFor={`${q.id}-${option}`}>{option}</Label>

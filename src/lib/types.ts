@@ -14,6 +14,8 @@ export type Course = {
   learningObjectives: string;
   learningSkills: string;
   learningTrajectories: string;
+  name?: string; // Optional for backwards compatibility
+  image?: string; // Optional for backwards compatibility
 };
 
 export type Student = {
@@ -34,4 +36,25 @@ export type EngagementData = {
   date: string;
   logins: number;
   questions: number;
+};
+
+export type Topic = {
+  id: string;
+  name: string;
+  mastery: 'strong' | 'needs_practice' | 'weak';
+};
+
+export type ChatMessage = {
+  id: number;
+  role: 'user' | 'assistant';
+  content: string;
+  citations?: string[];
+  isLoading?: boolean;
+};
+
+export type QuizQuestion = {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: string;
 };
