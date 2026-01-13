@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { Inter } from 'next/font/google';
+import AuthProviderClient from '@/components/AuthProviderClient';
+import AuthRedirector from '@/components/AuthRedirector';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -21,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-body antialiased`}>
-        {children}
+        <AuthProviderClient>
+          {children}
+          <AuthRedirector />
+        </AuthProviderClient>
         <Toaster />
       </body>
     </html>

@@ -14,6 +14,7 @@ functions/node_modules/
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+package-lock.json
 
 # testing
 /coverage
@@ -35,6 +36,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
 # vercel
 .vercel
@@ -131,3 +133,23 @@ Desktop.ini
 
 # Linux
 *~
+
+# dataconnect
+dataconnect/.dataconnect
+src/dataconnect-generated/
+src/dataconnect-admin-generated/
+.vscode/
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
