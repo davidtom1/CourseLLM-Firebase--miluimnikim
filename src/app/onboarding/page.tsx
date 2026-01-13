@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useState } from "react"
-import { useAuth } from "@/components/AuthProviderClient"
-import { doc, setDoc, serverTimestamp } from "firebase/firestore"
-import { db } from "@/features/firebase"
+import { useAuth } from "@/components/AuthProviderMock"
+import { mockAuth } from "@/features/mockAuth"
 import { useRouter } from "next/navigation"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -45,24 +44,19 @@ function OnboardingContent() {
     }
     setSaving(true)
     try {
-      const userDoc = doc(db, "users", firebaseUser.uid)
-      await setDoc(
-        userDoc,
-        {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-          photoURL: firebaseUser.photoURL,
-          role,
-          department,
-          courses,
-          authProviders: firebaseUser.providerData?.map((p) => p.providerId.replace(/\.com$/, "")) || [],
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-          profileComplete: true,
-        },
-        { merge: true }
-      )
+      await mockAuth.setProfile(firebaseUser.uid, {
+        uid: firebaseUser.uid,
+        email: firebaseUser.email,
+        displayName: firebaseUser.displayName,
+        photoURL: null,
+        role,
+        department,
+        courses,
+        authProviders: ["mock"],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        profileComplete: true,
+      })
 
       try {
         await refreshProfile()

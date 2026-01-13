@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useAuth } from "./AuthProviderClient";
+import { useAuth } from "./AuthProviderMock";
 import { useRouter } from "next/navigation";
 
 export const RoleGuardClient: React.FC<{

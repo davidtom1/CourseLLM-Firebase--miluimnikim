@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import { Inter } from 'next/font/google';
-import AuthProviderClient from '@/components/AuthProviderClient';
+import AuthProviderMock from '@/components/AuthProviderMock';
 import AuthRedirector from '@/components/AuthRedirector';
 
 const inter = Inter({
@@ -23,10 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-body antialiased`}>
-        <AuthProviderClient>
+        <AuthProviderMock>
           {children}
           <AuthRedirector />
-        </AuthProviderClient>
+        </AuthProviderMock>
         <Toaster />
       </body>
     </html>

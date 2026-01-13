@@ -2,7 +2,7 @@
 
 import React from "react";
 import { AppShell } from '@/components/layout/app-shell';
-import { useAuth } from '@/components/AuthProviderClient';
+import { useAuth } from '@/components/AuthProviderMock';
 import { LayoutDashboard, BookOpen, GraduationCap, BarChart2 } from 'lucide-react';
 
 type Props = { children: React.ReactNode; role?: "student" | "teacher" };
