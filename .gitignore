@@ -56,3 +56,16 @@ src/dataconnect-generated/
 src/dataconnect-admin-generated/
 .vscode/
 
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
