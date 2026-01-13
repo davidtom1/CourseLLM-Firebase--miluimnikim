@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/components/AuthProviderClient"
-import { auth } from "@/lib/firebase"
+import { auth } from "@/features/firebase"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { LogIn, Loader2 } from "lucide-react"

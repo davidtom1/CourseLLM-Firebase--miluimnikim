@@ -2,9 +2,9 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, type User as FirebaseUser } from "firebase/auth";
-import { auth, db } from "@/lib/firebase";
+import { auth, db } from "@/features/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import * as authService from "@/lib/authService";
+import * as authService from "@/features/authService";
 
 type Profile = {
   uid: string;

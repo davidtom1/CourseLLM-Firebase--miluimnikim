@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { useAuth } from "@/components/AuthProviderClient"
 import { doc, setDoc, serverTimestamp } from "firebase/firestore"
-import { db } from "@/lib/firebase"
+import { db } from "@/features/firebase"
 import { useRouter } from "next/navigation"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
