@@ -13,6 +13,9 @@ const SocraticCourseChatInputSchema = z.object({
     .string()
     .describe('The course material content to chat with, including all relevant text, formulas, and diagrams.'),
   studentQuestion: z.string().describe('The student\'s question about the course material.'),
+  threadId: z.string().optional().describe('The thread ID for storing IST analysis.'),
+  messageId: z.string().optional().describe('The message ID for storing IST analysis.'),
+  courseId: z.string().optional().describe('The course ID for storing IST analysis.'),
 });
 export type SocraticCourseChatInput = z.infer<typeof SocraticCourseChatInputSchema>;
 
@@ -29,7 +32,9 @@ export async function socraticCourseChat(input: SocraticCourseChatInput): Promis
     utterance: input.studentQuestion,
     courseContext,
     userId: undefined, // TODO: Pass user ID if available from auth context
-    courseId: undefined, // TODO: Pass course ID if available from route params
+    courseId: input.courseId ?? undefined,
+    threadId: input.threadId ?? undefined,
+    messageId: input.messageId ?? undefined,
   }).catch((err) => {
     // Already logged in extractAndStoreIST, just prevent unhandled rejection
     console.error('[IST] Unhandled error in IST extraction:', err);

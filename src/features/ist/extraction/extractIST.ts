@@ -1,7 +1,7 @@
 /**
  * Helper function to extract Intent-Skill-Trajectory from a student utterance.
  * This is a best-effort function that doesn't throw errors - it just logs them.
- * 
+ *
  * IST events are stored using a repository abstraction (currently JSON-based).
  * Storage failures are non-fatal and only logged - they won't block the chat flow.
  */
@@ -9,6 +9,8 @@
 import { getIstEventRepository } from '../repositories';
 import { getIstContextForIstExtraction } from '../context/istContextService';
 import type { IstContext } from '../types';
+import { executeMutation } from 'firebase/data-connect';
+import { connectorConfig, createIstEventRef } from '@dataconnect/generated';
 
 interface ISTResult {
   intent: string;
@@ -21,6 +23,8 @@ export type ExtractISTParams = {
   courseContext?: string | null;
   userId?: string | null;
   courseId?: string | null;
+  threadId?: string | null;
+  messageId?: string | null;
 };
 
 /**
@@ -28,7 +32,7 @@ export type ExtractISTParams = {
  * This function is best-effort and will not block the main flow.
  */
 export async function extractAndStoreIST(params: ExtractISTParams): Promise<ISTResult | null> {
-  const { utterance, courseContext, userId, courseId } = params;
+  const { utterance, courseContext, userId, courseId, threadId, messageId } = params;
 
   // Skip if utterance is empty or only whitespace
   if (!utterance || !utterance.trim()) {
@@ -108,10 +112,32 @@ export async function extractAndStoreIST(params: ExtractISTParams): Promise<ISTR
         skills: istData.skills,
         trajectory: istData.trajectory,
       });
-      console.log('[IST][Repository] Stored IST event');
+      console.log('[IST][Repository] Stored IST event to JSON');
     } catch (storageError) {
       // Log but don't fail - storage write is optional and non-blocking
       console.error('[IST][Repository] Failed to store IST event:', storageError);
+    }
+
+    // Save to DataConnect for IST dev page (non-blocking, best-effort)
+    if (threadId && messageId) {
+      try {
+        const ref = createIstEventRef(connectorConfig, {
+          userId: userId || 'user-placeholder',
+          courseId: courseId || 'unknown-course',
+          threadId,
+          messageId,
+          utterance: istContext.currentUtterance.trim(),
+          intent: istData.intent,
+          skills: istData.skills,
+          trajectory: istData.trajectory,
+        });
+        await executeMutation(ref);
+        console.log('[IST][DataConnect] Saved IST event to DataConnect');
+      } catch (dcError) {
+        console.error('[IST][DataConnect] Failed to save to DataConnect:', dcError);
+      }
+    } else {
+      console.log('[IST][DataConnect] Skipping save - missing threadId or messageId');
     }
 
     return istData;

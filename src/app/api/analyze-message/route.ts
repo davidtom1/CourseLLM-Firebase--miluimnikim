@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeMessage } from '@/features/ai/flows/analyze-message';
 import type { AnalyzeMessageRequest } from '@/shared/types';
+import { executeMutation } from 'firebase/data-connect';
+import { connectorConfig, createIstEventRef } from '@dataconnect/generated';
 
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as AnalyzeMessageRequest;
@@ -16,8 +18,24 @@ export async function POST(req: NextRequest) {
     const analysis = await analyzeMessage(body);
     console.log('🔥 Analysis API result:', analysis);
 
-    // ⛔️ הורדנו את ה-Firestore Web SDK מה-API route
-    // אין כאן setDoc / doc / db
+    // Save to DataConnect for IST dev page
+    try {
+      const ref = createIstEventRef(connectorConfig, {
+        userId: analysis.metadata.uid || 'user-placeholder',
+        courseId: body.courseId || 'unknown-course',
+        threadId: body.threadId,
+        messageId: body.messageId || `msg-${Date.now()}`,
+        utterance: body.messageText,
+        intent: analysis.intent.primary,
+        skills: analysis.skills.items,
+        trajectory: analysis.trajectory.suggestedNextNodes,
+      });
+      await executeMutation(ref);
+      console.log('🔥 Saved to DataConnect successfully');
+    } catch (dcError) {
+      console.error('🔥 Failed to save to DataConnect:', dcError);
+      // Don't fail the whole request if DataConnect save fails
+    }
 
     return NextResponse.json(analysis);
   } catch (error) {

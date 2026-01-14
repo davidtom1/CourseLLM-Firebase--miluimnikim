@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useState } from "react"
-import { useAuth } from "@/components/AuthProviderMock"
-import { mockAuth } from "@/features/mockAuth"
+import { useAuth } from "@/components/AuthProviderClient"
+import { db } from "@/features/firebase"
+import { doc, setDoc } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Badge } from "@/components/ui/badge"
 
 function OnboardingContent() {
@@ -44,17 +44,18 @@ function OnboardingContent() {
     }
     setSaving(true)
     try {
-      await mockAuth.setProfile(firebaseUser.uid, {
+      // Save profile to Firestore
+      await setDoc(doc(db, "users", firebaseUser.uid), {
         uid: firebaseUser.uid,
         email: firebaseUser.email,
         displayName: firebaseUser.displayName,
-        photoURL: null,
+        photoURL: firebaseUser.photoURL || null,
         role,
         department,
         courses,
-        authProviders: ["mock"],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        authProviders: firebaseUser.providerData?.map(p => p.providerId) || [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
         profileComplete: true,
       })
 

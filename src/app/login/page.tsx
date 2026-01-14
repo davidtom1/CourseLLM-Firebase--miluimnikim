@@ -2,8 +2,10 @@
 
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/components/AuthProviderMock"
-import { mockAuth } from "@/features/mockAuth"
+import { useAuth } from "@/components/AuthProviderClient"
+import { auth, db } from "@/features/firebase"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { LogIn, Loader2, User, GraduationCap } from "lucide-react"
@@ -40,7 +42,7 @@ export default function LoginPage() {
       if (isNew) return router.replace("/onboarding")
 
       await gotoAfterAuth()
-    } catch (err) {
+    } catch (err: any) {
       setNavigating(false)
       console.error(err)
     }
@@ -49,12 +51,31 @@ export default function LoginPage() {
   const handleMockLogin = async (role: "student" | "teacher") => {
     try {
       setNavigating(true)
-      const user = await mockAuth.signInMock(role)
+      const email = role === "student" ? "student@test.com" : "teacher@test.com"
+      const password = "password123"
+
+      // Sign in with test account
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+
+      // Create/update profile in Firestore
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        uid: userCredential.user.uid,
+        email: email,
+        displayName: role === "student" ? "Test Student" : "Test Teacher",
+        role: role,
+        department: "Test Department",
+        courses: ["test-course-101"],
+        profileComplete: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+
       await refreshProfile()
       router.replace(role === "student" ? "/student" : "/teacher")
-    } catch (err) {
+    } catch (err: any) {
       setNavigating(false)
-      console.error(err)
+      console.error("Mock login error:", err)
+      alert(`Login failed: ${err?.message || err}. Make sure Auth emulator is running.`)
     }
   }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import { useAuth } from './AuthProviderMock';
+import { useAuth } from './AuthProviderClient';
 import { usePathname, useRouter } from 'next/navigation';
 
 export default function AuthRedirector() {

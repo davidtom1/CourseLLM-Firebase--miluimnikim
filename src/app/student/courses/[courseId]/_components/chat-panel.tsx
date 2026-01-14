@@ -62,6 +62,9 @@ export function ChatPanel({ courseMaterial, courseId }: ChatPanelProps) {
             const result = await socraticCourseChat({
                 courseMaterial,
                 studentQuestion: messageText,
+                threadId,
+                messageId,
+                courseId: courseId ?? undefined,
             });
             const botMessage: Message = { role: "bot", text: result.response };
             setMessages((prev) => [...prev, botMessage]);
