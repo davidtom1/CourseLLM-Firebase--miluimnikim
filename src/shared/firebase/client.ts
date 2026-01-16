@@ -11,15 +11,15 @@ export const firebaseConfig = {
   authDomain:
     process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ??
     process.env.REACT_APP_FIREBASE_AUTH_DOMAIN ??
-    'demo.firebaseapp.com',
+    'coursewise-f2421.firebaseapp.com',
   projectId:
     process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ??
     process.env.REACT_APP_FIREBASE_PROJECT_ID ??
-    'demo-no-project',
+    'coursewise-f2421',
   storageBucket:
     process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ??
     process.env.REACT_APP_FIREBASE_STORAGE_BUCKET ??
-    'demo.appspot.com',
+    'coursewise-f2421.appspot.com',
   messagingSenderId:
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ??
     process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID ??

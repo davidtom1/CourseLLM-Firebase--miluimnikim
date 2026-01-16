@@ -80,7 +80,7 @@ function mapDspyToMessageAnalysis(dspyResponse, input) {
     const skillsItems = ((_c = dspyResponse.skills) !== null && _c !== void 0 ? _c : []).map((skill, index) => ({
         id: skill.toLowerCase().replace(/\s+/g, '-'),
         displayName: skill,
-        confidence: 0.8,
+        confidence: 0.8, // Default confidence, can be enhanced later
         role: index === 0 ? 'FOCUS' : 'SECONDARY',
     }));
     // Map trajectory array to MessageAnalysis trajectory format
@@ -99,7 +99,7 @@ function mapDspyToMessageAnalysis(dspyResponse, input) {
             items: skillsItems,
         },
         trajectory: {
-            currentNodes: [],
+            currentNodes: [], // Can be enriched later based on course context
             suggestedNextNodes,
             status: 'ON_TRACK', // Default status, can be enhanced based on analysis
         },
@@ -122,7 +122,7 @@ async function runIstAnalysis(input) {
         try {
             console.log('[analyzeMessage] Attempting to load IST context from Data Connect');
             const context = await (0, istContextFromDataConnect_1.loadIstContextFromDataConnect)({
-                userId: input.uid,
+                userId: input.uid, // Use the uid (demo-user in emulator)
                 courseId: (_a = input.courseId) !== null && _a !== void 0 ? _a : undefined,
                 maxHistory: 5,
             });
@@ -138,7 +138,7 @@ async function runIstAnalysis(input) {
             try {
                 console.log('[analyzeMessage] Falling back to JSON IST context loader');
                 const context = await (0, istContextFromJson_1.loadIstContextFromJson)({
-                    userId: input.uid,
+                    userId: input.uid, // Use the uid (demo-user in emulator)
                     courseId: (_b = input.courseId) !== null && _b !== void 0 ? _b : undefined,
                     maxHistory: 5,
                 });
@@ -180,16 +180,9 @@ exports.analyzeMessage = (0, https_1.onCall)({
     region: 'us-central1',
     timeoutSeconds: 180,
 }, async (request) => {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     try {
         const isEmulator = process.env.FUNCTIONS_EMULATOR === 'true';
-        const uid = (_b = (_a = request.auth) === null || _a === void 0 ? void 0 : _a.uid) !== null && _b !== void 0 ? _b : (isEmulator ? 'demo-user' : undefined);
-        if (isEmulator && !((_c = request.auth) === null || _c === void 0 ? void 0 : _c.uid)) {
-            console.log('[analyzeMessage] No auth in emulator, using demo UID "demo-user"');
-        }
-        if (!uid) {
-            throw new https_1.HttpsError('unauthenticated', 'User must be authenticated to call analyzeMessage.');
-        }
         const data = request.data;
         if (!data || typeof data !== 'object') {
             throw new https_1.HttpsError('invalid-argument', 'Request data must be an object.');
@@ -197,8 +190,16 @@ exports.analyzeMessage = (0, https_1.onCall)({
         if (!data.threadId || !data.messageText) {
             throw new https_1.HttpsError('invalid-argument', 'threadId and messageText are required.');
         }
+        // Demo Identity Override - use demo-user-1 for demo contexts
+        const isDemoContext = ((_a = data.threadId) === null || _a === void 0 ? void 0 : _a.startsWith('demo-')) || ((_b = data.courseId) === null || _b === void 0 ? void 0 : _b.includes('demo'));
+        const uid = isDemoContext
+            ? 'demo-user-1'
+            : ((_d = (_c = request.auth) === null || _c === void 0 ? void 0 : _c.uid) !== null && _d !== void 0 ? _d : (isEmulator ? 'demo-user-1' : undefined));
+        if (!uid) {
+            throw new https_1.HttpsError('unauthenticated', 'User must be authenticated to call analyzeMessage.');
+        }
         const messageId = data.messageId || 'auto-generated';
-        console.log('[analyzeMessage] Running IST analysis for threadId:', data.threadId, 'messageId:', messageId);
+        console.log('[analyzeMessage] Processing:', { threadId: data.threadId, messageId, userId: uid });
         const analysis = await runIstAnalysis(Object.assign(Object.assign({}, data), { messageId, uid }));
         console.log('[analyzeMessage] IST analysis complete, writing to Firestore...');
         const db = (0, firebaseAdmin_1.getFirestore)();

@@ -229,19 +229,6 @@ export const analyzeMessage = onCall(
   ): Promise<MessageAnalysis> => {
     try {
       const isEmulator = process.env.FUNCTIONS_EMULATOR === 'true';
-      const uid = request.auth?.uid ?? (isEmulator ? 'demo-user' : undefined);
-      
-      if (isEmulator && !request.auth?.uid) {
-        console.log('[analyzeMessage] No auth in emulator, using demo UID "demo-user"');
-      }
-      
-      if (!uid) {
-        throw new HttpsError(
-          'unauthenticated',
-          'User must be authenticated to call analyzeMessage.'
-        );
-      }
-
       const data = request.data;
 
       if (!data || typeof data !== 'object') {
@@ -258,9 +245,22 @@ export const analyzeMessage = onCall(
         );
       }
 
+      // Demo Identity Override - use demo-user-1 for demo contexts
+      const isDemoContext = data.threadId?.startsWith('demo-') || data.courseId?.includes('demo');
+      const uid = isDemoContext
+        ? 'demo-user-1'
+        : (request.auth?.uid ?? (isEmulator ? 'demo-user-1' : undefined));
+      
+      if (!uid) {
+        throw new HttpsError(
+          'unauthenticated',
+          'User must be authenticated to call analyzeMessage.'
+        );
+      }
+
       const messageId = data.messageId || 'auto-generated';
 
-      console.log('[analyzeMessage] Running IST analysis for threadId:', data.threadId, 'messageId:', messageId);
+      console.log('[analyzeMessage] Processing:', { threadId: data.threadId, messageId, userId: uid });
       const analysis = await runIstAnalysis({ ...data, messageId, uid });
 
       console.log('[analyzeMessage] IST analysis complete, writing to Firestore...');

@@ -19,28 +19,51 @@ type ListParams = {
 };
 
 let dataConnectInstance: ReturnType<typeof getDataConnect> | null = null;
+let emulatorConnected = false;
+
+// Use a dedicated named app for Data Connect to avoid conflicts with other Firebase initializations
+const DATA_CONNECT_APP_NAME = "dataconnect-client";
 
 function getOrInitDataConnect() {
   if (dataConnectInstance) return dataConnectInstance;
 
-  // Ensure there is a Firebase App
-  if (getApps().length === 0) {
-    // For emulator, projectId is usually enough
-    initializeApp({
-      projectId:
-        process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "coursewise-f2421",
-    });
+  try {
+    // 1. Get or create a NAMED app specifically for Data Connect
+    // This avoids conflicts with the default app initialized elsewhere
+    let app = getApps().find((a) => a.name === DATA_CONNECT_APP_NAME);
+    
+    if (!app) {
+      app = initializeApp(
+        {
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "coursewise-f2421",
+          apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "demo-api-key",
+          authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "coursewise-f2421.firebaseapp.com",
+        },
+        DATA_CONNECT_APP_NAME
+      );
+      console.log("[DataConnect] Created dedicated Firebase app:", DATA_CONNECT_APP_NAME);
+    }
+
+    // 2. Initialize DC with EXPLICIT App + RAW Config
+    const dc = getDataConnect(app, connectorConfig);
+
+    // 3. Connect to Emulator (Safe Mode)
+    if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true" && !emulatorConnected) {
+      try {
+        connectDataConnectEmulator(dc, "127.0.0.1", 9400, false);
+        emulatorConnected = true;
+        console.log("[DataConnect] Connected to emulator at 127.0.0.1:9400 (SSL disabled)");
+      } catch (e) {
+        console.warn("[DataConnect] Failed to connect to emulator:", e);
+      }
+    }
+
+    dataConnectInstance = dc;
+    return dc;
+  } catch (err) {
+    console.error("[DataConnect] Failed to initialize:", err);
+    return null;
   }
-
-  const dc = getDataConnect(connectorConfig);
-
-  // Connect to emulator in development
-  if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true") {
-    connectDataConnectEmulator(dc, "localhost", 9400);
-  }
-
-  dataConnectInstance = dc;
-  return dc;
 }
 
 /**

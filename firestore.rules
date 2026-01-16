@@ -22,6 +22,33 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
+     * @description Enforces that only the user can read and write their own profile data.
+     * @path /users/{userId}
+     * @allow (read, write) User with UID 'user123' can read/write their own profile at /users/user123.
+     * @deny (read, write) User with UID 'user456' cannot read/write a profile at /users/user123.
+     * @principle Enforces document ownership for reads and writes.
+     */
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    /**
+     * @description Enforces that only the thread owner can read and write their chat threads.
+     * @path /threads/{threadId}
+     * @allow (read, write) User can access threads where userId matches their auth UID.
+     * @principle Enforces document ownership for Socratic Chat & Intent Inspector.
+     */
+    match /threads/{threadId} {
+      // Allow access if the thread belongs to the user (existing doc) or user is creating it (new doc)
+      allow read, write: if request.auth != null && (resource.data.userId == request.auth.uid || request.resource.data.userId == request.auth.uid);
+
+      // Allow access to the 'analysis' subcollection
+      match /analysis/{analysisId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    /**
      * @description Enforces that only the teacher can read and write their own profile data.
      * @path /teachers/{teacherId}
      * @allow (create, update, delete) User with UID 'teacher123' can create/update/delete their own profile at /teachers/teacher123.
@@ -279,7 +306,6 @@ service cloud.firestore {
         function isOwner(studentId) {
             return isSignedIn() && request.auth.uid == studentId;
         }
-
         function isExistingOwner(studentId) {
             return isOwner(studentId) && resource != null;
         }
