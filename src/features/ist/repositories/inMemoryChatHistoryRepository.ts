@@ -31,7 +31,7 @@ export class InMemoryChatHistoryRepository implements ChatHistoryRepository {
   private messages: ChatMessage[] = [];
 
   async getRecentMessages(
-    params: GetRecentChatMessagesParams
+    _params: GetRecentChatMessagesParams
   ): Promise<ChatMessage[]> {
     // DEMO MODE: Return canned chat history when enabled
     if (!isIstDemoMode()) {

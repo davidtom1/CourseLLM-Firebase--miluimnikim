@@ -9,7 +9,7 @@ const ENABLED = process.env.ENABLE_TEST_AUTH === "true";
 function initAdmin() {
   if (admin.apps.length) return admin;
 
-  let serviceAccount: any = null;
+  let serviceAccount: admin.ServiceAccount | null = null;
   if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
     try {
       serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
@@ -66,8 +66,9 @@ export async function GET(req: Request) {
 
     const token = await adm.auth().createCustomToken(uid);
     return NextResponse.json({ token });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("test-token error", err);
-    return NextResponse.json({ error: String(err?.message || err) }, { status: 500 });
+    const message = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

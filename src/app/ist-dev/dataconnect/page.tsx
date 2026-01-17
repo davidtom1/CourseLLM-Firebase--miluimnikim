@@ -11,10 +11,17 @@ type IstEvent = {
   messageId: string;
   utterance: string;
   intent: string;
-  skills?: any;
-  trajectory?: any;
+  skills?: unknown;
+  trajectory?: unknown;
   createdAt: string;
 };
+
+function toStringArray(value: unknown): string[] | null {
+  if (Array.isArray(value) && value.length > 0) {
+    return value as string[];
+  }
+  return null;
+}
 
 export default function IstDataconnectDebugPage() {
   const [loading, setLoading] = useState(false);
@@ -34,7 +41,7 @@ export default function IstDataconnectDebugPage() {
       const data = await listIstEventsForUserAndCourse({ userId, courseId });
       // listIstEventsForUserAndCourse already returns an array of events
       setEvents(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to load IST events from Data Connect", err);
       setError("Failed to load IST events from Data Connect. Check console/logs for details.");
     } finally {
@@ -83,22 +90,22 @@ export default function IstDataconnectDebugPage() {
             <div className="mt-1 font-semibold">Intent: {e.intent}</div>
             <div className="mt-1 text-sm mb-2">Utterance: {e.utterance}</div>
             
-            {e.skills && Array.isArray(e.skills) && e.skills.length > 0 && (
+            {toStringArray(e.skills) && (
               <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-900 rounded">
                 <strong className="text-xs uppercase text-gray-500">Skills:</strong>
                 <ul className="list-disc ml-5 text-sm">
-                  {e.skills.map((s: string, idx: number) => (
+                  {toStringArray(e.skills)!.map((s, idx) => (
                     <li key={idx}>{s}</li>
                   ))}
                 </ul>
               </div>
             )}
 
-            {e.trajectory && Array.isArray(e.trajectory) && e.trajectory.length > 0 && (
+            {toStringArray(e.trajectory) && (
               <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-900 rounded">
                 <strong className="text-xs uppercase text-gray-500">Trajectory:</strong>
                 <ol className="list-decimal ml-5 text-sm">
-                  {e.trajectory.map((step: string, idx: number) => (
+                  {toStringArray(e.trajectory)!.map((step, idx) => (
                     <li key={idx}>{step}</li>
                   ))}
                 </ol>

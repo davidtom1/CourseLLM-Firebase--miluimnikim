@@ -10,7 +10,9 @@
     "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "cd dataconnect && firebase dataconnect:sdk:generate || echo 'DataConnect SDK generation skipped (no Firebase CLI or offline)'",
+    "dataconnect:generate": "cd dataconnect && firebase dataconnect:sdk:generate"
   },
   "dependencies": {
     "@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",

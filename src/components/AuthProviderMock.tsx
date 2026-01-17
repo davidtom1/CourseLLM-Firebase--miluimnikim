@@ -12,8 +12,8 @@ type Profile = {
   department?: string;
   courses?: string[];
   authProviders?: string[];
-  createdAt?: any;
-  updatedAt?: any;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   profileComplete?: boolean;
 };
 

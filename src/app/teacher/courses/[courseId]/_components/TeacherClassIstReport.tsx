@@ -56,9 +56,9 @@ export function TeacherClassIstReport({ courseId }: Props) {
 
         setReport(computed);
         setStatus("success");
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("[TeacherClassIstReport] Failed to generate report", err);
-        setError(err?.message ?? "Unknown error while generating IST class report");
+        setError(err instanceof Error ? err.message : "Unknown error while generating IST class report");
         setReport(null);
         setStatus("error");
       }

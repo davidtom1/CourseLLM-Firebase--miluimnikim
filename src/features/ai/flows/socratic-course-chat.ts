@@ -90,7 +90,7 @@ const socraticCourseChatFlow = ai.defineFlow(
     try {
       const result = await socraticPrompt(input);
       output = result.output;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(
         '[socratic-course-chat] socraticPrompt failed, returning fallback tutor message instead of throwing:',
         err

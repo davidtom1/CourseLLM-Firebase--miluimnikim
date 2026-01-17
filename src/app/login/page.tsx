@@ -26,7 +26,8 @@ export default function LoginPage() {
       new Promise<null>((r) => setTimeout(() => r(null), 700)),
     ])
 
-    if (res && (res as any).role) return router.replace((res as any).role === "teacher" ? "/teacher" : "/student")
+    const resProfile = res as { role?: string } | null;
+    if (resProfile?.role) return router.replace(resProfile.role === "teacher" ? "/teacher" : "/student")
 
     // Fallback: optimistic default. RoleGuard will correct if needed.
     return router.replace("/student")
@@ -42,7 +43,7 @@ export default function LoginPage() {
       if (isNew) return router.replace("/onboarding")
 
       await gotoAfterAuth()
-    } catch (err: any) {
+    } catch (err: unknown) {
       setNavigating(false)
       console.error(err)
     }
@@ -72,10 +73,11 @@ export default function LoginPage() {
 
       await refreshProfile()
       router.replace(role === "student" ? "/student" : "/teacher")
-    } catch (err: any) {
+    } catch (err: unknown) {
       setNavigating(false)
       console.error("Mock login error:", err)
-      alert(`Login failed: ${err?.message || err}. Make sure Auth emulator is running.`)
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`Login failed: ${message}. Make sure Auth emulator is running.`)
     }
   }
 
@@ -87,7 +89,7 @@ export default function LoginPage() {
         <Card>
         <CardHeader>
           <CardTitle>Sign in to CourseLLM</CardTitle>
-          <CardDescription>Sign in with Google to continue — we'll only store the info needed for your profile.</CardDescription>
+          <CardDescription>Sign in with Google to continue &mdash; we&apos;ll only store the info needed for your profile.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col space-y-4">

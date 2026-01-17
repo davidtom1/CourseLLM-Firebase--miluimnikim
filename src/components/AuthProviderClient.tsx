@@ -15,8 +15,8 @@ type Profile = {
   department?: string;
   courses?: string[];
   authProviders?: string[];
-  createdAt?: any;
-  updatedAt?: any;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
 };
 
 type AuthContextValue = {
@@ -74,17 +74,18 @@ export const AuthProviderClient: React.FC<{ children: React.ReactNode }> = ({ ch
       setProfile({ ...data } as Profile);
       setOnboardingRequired(!isComplete);
       return data;
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Firestore offline error (client is offline) or other transient network errors.
       // In this case, avoid forcing onboarding redirect. Leave profile null and
       // onboardingRequired false so UI can show an offline retry state instead of
       // redirecting the user to onboarding.
-      const msg = err?.message || err?.code || "";
-      if (msg.toString().toLowerCase().includes("client is offline") || err?.code === 'unavailable' || err?.code === 'failed-precondition') {
+      const firebaseError = err as { message?: string; code?: string };
+      const msg = firebaseError?.message || firebaseError?.code || "";
+      if (msg.toString().toLowerCase().includes("client is offline") || firebaseError?.code === 'unavailable' || firebaseError?.code === 'failed-precondition') {
         console.warn("Firestore unavailable (offline?) - will not force onboarding:", err);
         setProfile(null);
         setOnboardingRequired(false);
-          return null;
+        return null;
       }
       // Re-throw unexpected errors so they can be observed
       throw err;

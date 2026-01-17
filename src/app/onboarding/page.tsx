@@ -15,7 +15,7 @@ function OnboardingContent() {
   const [department, setDepartment] = useState(profile?.department || "")
   const [coursesInput, setCoursesInput] = useState("")
   const [courses, setCourses] = useState<string[]>(profile?.courses || [])
-  const [role, setRole] = useState<"student" | "teacher">((profile?.role as any) || "student")
+  const [role, setRole] = useState<"student" | "teacher">(profile?.role ?? "student")
   const [saving, setSaving] = useState(false)
   const router = useRouter()
 
