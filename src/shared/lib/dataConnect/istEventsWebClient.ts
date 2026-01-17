@@ -48,8 +48,12 @@ function getOrInitDataConnect() {
     const dc = getDataConnect(app, connectorConfig);
 
     // 3. Connect to Emulator (Safe Mode)
-    if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true" && !emulatorConnected) {
+    // Check for emulator mode using the environment variable
+    const useEmulator = process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true";
+    
+    if (useEmulator && !emulatorConnected) {
       try {
+        // Use 127.0.0.1 to avoid Node 17+ IPv6 issues
         connectDataConnectEmulator(dc, "127.0.0.1", 9400, false);
         emulatorConnected = true;
         console.log("[DataConnect] Connected to emulator at 127.0.0.1:9400 (SSL disabled)");

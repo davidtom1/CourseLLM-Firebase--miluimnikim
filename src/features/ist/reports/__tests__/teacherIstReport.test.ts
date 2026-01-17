@@ -2,7 +2,7 @@ import {
   computeTeacherIstClassReportV2,
   IstEventForReport,
   normalizeSkill,
-} from "./teacherIstReport";
+} from "../teacherIstReport";
 
 describe("normalizeSkill", () => {
   it("trims, collapses whitespace, and lowercases", () => {
@@ -117,3 +117,4 @@ describe("computeTeacherIstClassReportV2 – trends", () => {
     expect(decliningB?.prev7Count).toBe(2);
   });
 });
+
