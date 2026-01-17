@@ -27,7 +27,7 @@
  * Only ist_history is populated from the IST events.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadIstContextFromJson = void 0;
+exports.loadIstContextFromJson = loadIstContextFromJson;
 const fs_1 = require("fs");
 const path_1 = require("path");
 /**
@@ -98,5 +98,4 @@ async function loadIstContextFromJson(options) {
         return { chatHistory: [], istHistory: [] };
     }
 }
-exports.loadIstContextFromJson = loadIstContextFromJson;
 //# sourceMappingURL=istContextFromJson.js.map

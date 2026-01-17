@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeMessage } from '@/features/ai/flows/analyze-message';
 import type { AnalyzeMessageRequest } from '@/shared/types';
+
+// Ensure Firebase app is initialized before using Data Connect SDK
+import '@/features/firebase';
+
 import { executeMutation } from 'firebase/data-connect';
 import { connectorConfig, createIstEventRef } from '@dataconnect/generated';
 

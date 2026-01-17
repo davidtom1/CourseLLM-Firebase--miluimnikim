@@ -7,7 +7,7 @@
  * downstream DSPy calls can remain unchanged.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadIstContextFromDataConnect = void 0;
+exports.loadIstContextFromDataConnect = loadIstContextFromDataConnect;
 const app_1 = require("firebase/app");
 const data_connect_1 = require("firebase/data-connect");
 const functions_generated_1 = require("@dataconnect/functions-generated");
@@ -106,5 +106,4 @@ async function loadIstContextFromDataConnect(options) {
         return { chatHistory: [], istHistory: [] };
     }
 }
-exports.loadIstContextFromDataConnect = loadIstContextFromDataConnect;
 //# sourceMappingURL=istContextFromDataConnect.js.map

@@ -6,11 +6,55 @@
  * Storage failures are non-fatal and only logged - they won't block the chat flow.
  */
 
+import { getApps, initializeApp } from 'firebase/app';
+import { getDataConnect, connectDataConnectEmulator, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, createIstEventRef } from '@dataconnect/generated';
 import { getIstEventRepository } from '../repositories';
 import { getIstContextForIstExtraction } from '../context/istContextService';
 import type { IstContext } from '../types';
-import { executeMutation } from 'firebase/data-connect';
-import { connectorConfig, createIstEventRef } from '@dataconnect/generated';
+
+// Singleton for Data Connect with emulator support
+let dcInstance: ReturnType<typeof getDataConnect> | null = null;
+let dcEmulatorConnected = false;
+const DC_APP_NAME = "ist-dataconnect";
+
+function getDataConnectForIST() {
+  if (dcInstance) return dcInstance;
+
+  try {
+    // Use a named app to avoid conflicts
+    let app = getApps().find((a) => a.name === DC_APP_NAME);
+    if (!app) {
+      app = initializeApp(
+        {
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "coursewise-f2421",
+          apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "demo-api-key",
+          authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "coursewise-f2421.firebaseapp.com",
+        },
+        DC_APP_NAME
+      );
+    }
+
+    const dc = getDataConnect(app, connectorConfig);
+
+    // Connect to emulator
+    if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true" && !dcEmulatorConnected) {
+      try {
+        connectDataConnectEmulator(dc, "127.0.0.1", 9400, false);
+        dcEmulatorConnected = true;
+        console.log("[IST][DataConnect] Connected to emulator at 127.0.0.1:9400");
+      } catch (e) {
+        console.warn("[IST][DataConnect] Failed to connect to emulator:", e);
+      }
+    }
+
+    dcInstance = dc;
+    return dc;
+  } catch (err) {
+    console.error("[IST][DataConnect] Failed to initialize:", err);
+    return null;
+  }
+}
 
 interface ISTResult {
   intent: string;
@@ -121,18 +165,23 @@ export async function extractAndStoreIST(params: ExtractISTParams): Promise<ISTR
     // Save to DataConnect for IST dev page (non-blocking, best-effort)
     if (threadId && messageId) {
       try {
-        const ref = createIstEventRef(connectorConfig, {
-          userId: userId || 'user-placeholder',
-          courseId: courseId || 'unknown-course',
-          threadId,
-          messageId,
-          utterance: istContext.currentUtterance.trim(),
-          intent: istData.intent,
-          skills: istData.skills,
-          trajectory: istData.trajectory,
-        });
-        await executeMutation(ref);
-        console.log('[IST][DataConnect] Saved IST event to DataConnect');
+        const dc = getDataConnectForIST();
+        if (dc) {
+          const ref = createIstEventRef(dc, {
+            userId: userId || 'user-placeholder',
+            courseId: courseId || 'unknown-course',
+            threadId,
+            messageId,
+            utterance: istContext.currentUtterance.trim(),
+            intent: istData.intent,
+            skills: istData.skills,
+            trajectory: istData.trajectory,
+          });
+          await executeMutation(ref);
+          console.log('[IST][DataConnect] Saved IST event to DataConnect');
+        } else {
+          console.warn('[IST][DataConnect] Skipping save - DataConnect not initialized');
+        }
       } catch (dcError) {
         console.error('[IST][DataConnect] Failed to save to DataConnect:', dcError);
       }

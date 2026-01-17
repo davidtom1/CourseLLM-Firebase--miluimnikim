@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from 'firebase/app';
+import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getDataConnect, connectDataConnectEmulator, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, createIstEventRef } from '@dataconnect/functions-generated';
 
@@ -15,6 +15,10 @@ interface IstEventInput {
 
 // Keep a singleton Data Connect instance
 let dataConnectInstance: ReturnType<typeof getDataConnect> | null = null;
+let emulatorConnected = false;
+
+// Use a dedicated named app for Data Connect to avoid conflicts
+const DC_APP_NAME = 'functions-dataconnect';
 
 function getOrInitDataConnect() {
   if (dataConnectInstance) {
@@ -22,35 +26,49 @@ function getOrInitDataConnect() {
   }
 
   try {
-    // Ensure a default Firebase App exists
-    if (getApps().length === 0) {
+    // 1. Ensure App Exists - Use a NAMED app to avoid conflicts
+    let app: FirebaseApp;
+    const existingApp = getApps().find(a => a.name === DC_APP_NAME);
+    
+    if (existingApp) {
+      app = existingApp;
+    } else {
       const configEnv = process.env.FIREBASE_CONFIG;
-      if (!configEnv) {
-        // In some emulator environments, FIREBASE_CONFIG might be missing or minimal.
-        // We can try a fallback or just log error.
-        // For local emulator, sometimes just {} is enough if we trust the emulator config.
-        console.warn('[DataConnect] Missing FIREBASE_CONFIG env var. Attempting to initialize with minimal config for emulator.');
-        // Minimal config might work for emulator if it only needs project ID
-        initializeApp({ projectId: process.env.GCLOUD_PROJECT || 'coursewise-f2421' });
-      } else {
+      if (configEnv) {
         const firebaseConfig = JSON.parse(configEnv);
-        initializeApp(firebaseConfig);
+        app = initializeApp(firebaseConfig, DC_APP_NAME);
+      } else {
+        // Fallback for emulator: provide fuller config to prevent SDK internal errors
+        app = initializeApp({
+          projectId: process.env.GCLOUD_PROJECT || 'coursewise-f2421',
+          apiKey: 'demo-api-key',
+          authDomain: 'coursewise-f2421.firebaseapp.com',
+        }, DC_APP_NAME);
       }
     }
 
-    const dc = getDataConnect(connectorConfig);
+    // 2. Initialize DC with EXPLICIT App + RAW Config
+    const dc = getDataConnect(app, connectorConfig);
 
-    if (process.env.FUNCTIONS_EMULATOR === 'true') {
-      // Port 9400 is defined in firebase.json for the Data Connect emulator
-      connectDataConnectEmulator(dc, 'localhost', 9400);
+    // 3. Connect to Emulator (Robust)
+    const isEmulatorEnv = process.env.FUNCTIONS_EMULATOR === 'true' || !!process.env.FIREBASE_AUTH_EMULATOR_HOST;
+    
+    if (isEmulatorEnv && !emulatorConnected) {
+      try {
+        connectDataConnectEmulator(dc, '127.0.0.1', 9400, false);
+        emulatorConnected = true;
+        console.log('[DataConnect] Connected to emulator at 127.0.0.1:9400');
+      } catch (connErr: any) {
+        console.warn('[DataConnect] Could not connect to emulator:', connErr.message);
+        emulatorConnected = true; // Avoid retry loops
+      }
     }
 
     dataConnectInstance = dc;
-    console.log('[DataConnect] Initialized Data Connect client');
     return dataConnectInstance;
 
   } catch (err) {
-    console.error('[DataConnect] Failed to initialize Data Connect client', err);
+    console.error('[DataConnect] Fatal initialization error:', err);
     return null;
   }
 }
@@ -59,7 +77,7 @@ export async function saveIstEventToDataConnect(input: IstEventInput): Promise<v
   const dc = getOrInitDataConnect();
 
   if (!dc) {
-    console.warn('[DataConnect] Skipping saveIstEventToDataConnect because Data Connect client is not initialized');
+    console.warn('[DataConnect] Skipping save - client not initialized');
     return;
   }
 
@@ -76,8 +94,8 @@ export async function saveIstEventToDataConnect(input: IstEventInput): Promise<v
     });
 
     await executeMutation(ref);
-    console.log('[DataConnect] Successfully created IstEvent for messageId', input.messageId);
-  } catch (err) {
-    console.error('[DataConnect] Failed to create IstEvent for messageId', input.messageId, err);
+    console.log('[DataConnect] Saved IstEvent for messageId:', input.messageId);
+  } catch (err: any) {
+    console.error('[DataConnect] Failed to save IstEvent:', err?.message || err);
   }
 }
