@@ -48,9 +48,10 @@ function getOrInitDataConnect() {
     const dc = getDataConnect(app, connectorConfig);
 
     // 3. Connect to Emulator (Safe Mode)
-    // Check for emulator mode using the environment variable
-    const useEmulator = process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true";
-    
+// Note: NEXT_PUBLIC_ vars work on client, but on server we check NODE_ENV or explicit server-side var
+    const useEmulator = process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true"
+      || process.env.FIREBASE_USE_EMULATOR === "true"
+      || process.env.NODE_ENV === "development";
     if (useEmulator && !emulatorConnected) {
       try {
         // Use 127.0.0.1 to avoid Node 17+ IPv6 issues

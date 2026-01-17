@@ -2,7 +2,7 @@
   "name": "coursewise",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+ "scripts": {
     "dev": "next dev --turbopack -p 9002",
     "build": "NODE_ENV=production next build",
     "start": "next start",
@@ -13,7 +13,9 @@
     "verify": "bash scripts/verify-system.sh",
     "verify:win": "scripts\\verify-system.bat",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
-    "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts"
+    "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
+    "postinstall": "cd dataconnect && firebase dataconnect:sdk:generate || echo 'DataConnect SDK generation skipped (no Firebase CLI or offline)'",
+    "dataconnect:generate": "cd dataconnect && firebase dataconnect:sdk:generate"
   },
   "dependencies": {
     "@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",

@@ -37,8 +37,13 @@ function getDataConnectForIST() {
 
     const dc = getDataConnect(app, connectorConfig);
 
-    // Connect to emulator
-    if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true" && !dcEmulatorConnected) {
+    // Connect to emulator in development
+    // Note: NEXT_PUBLIC_ vars work on client, but on server we check NODE_ENV or explicit server-side var
+    const useEmulator = process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true"
+      || process.env.FIREBASE_USE_EMULATOR === "true"
+      || process.env.NODE_ENV === "development";
+
+    if (useEmulator && !dcEmulatorConnected) {
       try {
         connectDataConnectEmulator(dc, "127.0.0.1", 9400, false);
         dcEmulatorConnected = true;

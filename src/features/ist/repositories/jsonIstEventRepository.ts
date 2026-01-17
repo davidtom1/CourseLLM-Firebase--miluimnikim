@@ -48,9 +48,10 @@ export class JsonIstEventRepository implements IstEventRepository {
         console.warn('[IST][JSON] events.json is not an array, starting fresh');
         this.events = [];
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       // File doesn't exist yet or read error - start with empty array
-      if (error.code === 'ENOENT') {
+      const nodeError = error as { code?: string };
+      if (nodeError.code === 'ENOENT') {
         console.log('[IST][JSON] events.json not found, starting with empty array');
         this.events = [];
       } else {

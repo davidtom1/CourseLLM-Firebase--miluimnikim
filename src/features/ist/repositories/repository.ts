@@ -1,7 +1,7 @@
 
 import type { MessageAnalysis } from '@/shared/types';
 import { db } from '@/features/firebase';
-import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
 
 export interface IstAnalysisRepository {
   save(analysis: MessageAnalysis): Promise<void>;

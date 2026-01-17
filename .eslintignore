@@ -1,0 +1,18 @@
+# Ignore generated DataConnect files
+src/dataconnect-generated/
+src/dataconnect-admin-generated/
+
+# Ignore quarantine folder
+_unused_quarantine/
+
+# Ignore build output
+.next/
+out/
+dist/
+build/
+
+# Ignore node_modules
+node_modules/
+
+# Ignore functions (has its own tsconfig)
+functions/

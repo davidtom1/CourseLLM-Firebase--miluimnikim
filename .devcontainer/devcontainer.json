@@ -1,0 +1,95 @@
+{
+  "name": "CourseLLM Development",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": true,
+      "installJupyterlab": false
+    },
+    "ghcr.io/devcontainers-contrib/features/uv:2": {}
+  },
+  "forwardPorts": [
+    3000,
+    9002,
+    8000,
+    8080,
+    9099,
+    5001,
+    4000,
+    9400
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js App (Port 3000)",
+      "onAutoForward": "notify"
+    },
+    "9002": {
+      "label": "Next.js Dev Server (Port 9002)",
+      "onAutoForward": "notify"
+    },
+    "8000": {
+      "label": "DSPy FastAPI Service (Port 8000)",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Firestore Emulator (Port 8080)",
+      "onAutoForward": "notify"
+    },
+    "9099": {
+      "label": "Firebase Auth Emulator (Port 9099)",
+      "onAutoForward": "notify"
+    },
+    "5001": {
+      "label": "Firebase Functions Emulator (Port 5001)",
+      "onAutoForward": "notify"
+    },
+    "4000": {
+      "label": "Firebase Emulator Suite UI (Port 4000)",
+      "onAutoForward": "notify"
+    },
+    "9400": {
+      "label": "Firebase DataConnect Emulator (Port 9400)",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "/bin/bash -c 'set -e && echo \"Setting up CourseLLM development environment...\" && npm install -g pnpm && uv sync --python 3.12 && pnpm install && echo \"Environment setup complete!\"'",
+  "remoteUser": "node",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-vscode.makefile-tools",
+        "charliermarsh.ruff",
+        "firefox-devtools.vscode-firefox-debug",
+        "rangav.vscode-thunder-client",
+        "usernamehw.errorlens",
+        "ms-azuretools.vscode-docker",
+        "firebase.firebase"
+      ],
+      "settings": {
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.formatting.provider": "black",
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.python",
+          "editor.formatOnSave": true
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
+  ]
+}

@@ -7,6 +7,16 @@ type MockUser = {
   role: "student" | "teacher";
 };
 
+type MockProfile = {
+  uid: string;
+  email: string;
+  displayName: string;
+  role: "student" | "teacher";
+  department?: string;
+  courses?: string[];
+  profileComplete?: boolean;
+};
+
 type Listener = (user: MockUser | null) => void;
 
 class MockAuthService {
@@ -63,12 +73,12 @@ class MockAuthService {
   }
 
   // Mock Firestore operations
-  async getProfile(uid: string): Promise<any | null> {
+  async getProfile(uid: string): Promise<MockProfile | null> {
     const stored = localStorage.getItem(`user-${uid}`);
     return stored ? JSON.parse(stored) : null;
   }
 
-  async setProfile(uid: string, data: any): Promise<void> {
+  async setProfile(uid: string, data: MockProfile): Promise<void> {
     localStorage.setItem(`user-${uid}`, JSON.stringify(data));
   }
 }

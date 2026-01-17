@@ -37,10 +37,10 @@ export default function DebugAnalysisPage() {
 
         setThreadAnalyses(allForThread);
         setError(null);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('🔥 Error in DebugAnalysisPage:', err);
         setAnalysis(null);
-        setError(err.message ?? String(err));
+        setError(err instanceof Error ? err.message : String(err));
       }
     };
 

@@ -11,8 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CreditCard, LogOut, Settings, User } from "lucide-react";
-import Link from "next/link";
+import { LogOut, Settings, User } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProviderClient';
 

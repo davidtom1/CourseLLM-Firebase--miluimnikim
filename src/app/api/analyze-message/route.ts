@@ -2,12 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { analyzeMessage } from '@/features/ai/flows/analyze-message';
 import type { AnalyzeMessageRequest } from '@/shared/types';
 
-// Ensure Firebase app is initialized before using Data Connect SDK
-import '@/features/firebase';
-
-import { executeMutation } from 'firebase/data-connect';
-import { connectorConfig, createIstEventRef } from '@dataconnect/generated';
-
+/**
+ * API route for analyzing student messages.
+ * DataConnect saving is handled by extractAndStoreIST in the socratic chat flow,
+ * so we don't duplicate it here to avoid the "Resource not found" emulator issue.
+ */
 export async function POST(req: NextRequest) {
   const body = (await req.json()) as AnalyzeMessageRequest;
 
@@ -21,26 +20,6 @@ export async function POST(req: NextRequest) {
   try {
     const analysis = await analyzeMessage(body);
     console.log('🔥 Analysis API result:', analysis);
-
-    // Save to DataConnect for IST dev page
-    try {
-      const ref = createIstEventRef(connectorConfig, {
-        userId: analysis.metadata.uid || 'user-placeholder',
-        courseId: body.courseId || 'unknown-course',
-        threadId: body.threadId,
-        messageId: body.messageId || `msg-${Date.now()}`,
-        utterance: body.messageText,
-        intent: analysis.intent.primary,
-        skills: analysis.skills.items,
-        trajectory: analysis.trajectory.suggestedNextNodes,
-      });
-      await executeMutation(ref);
-      console.log('🔥 Saved to DataConnect successfully');
-    } catch (dcError) {
-      console.error('🔥 Failed to save to DataConnect:', dcError);
-      // Don't fail the whole request if DataConnect save fails
-    }
-
     return NextResponse.json(analysis);
   } catch (error) {
     console.error('🔥 Error in analyze-message API:', error);
