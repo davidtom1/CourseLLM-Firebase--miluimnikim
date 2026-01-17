@@ -29,9 +29,48 @@ The core goals are to:
 
 More technical details are available in openspec/project.md
 
-## 📚 Documentation
+## 🚀 Quick Setup
+
+### One-Click GitHub Codespaces
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/LLMs-for-SE-2026-BGU/CourseLLM-Firebase)
+
+Everything auto-installs in 2-3 minutes ✨
+
+### Complete Setup Instructions
+
+**→ [See SETUP.md for full setup guide](./SETUP.md)**
+
+Includes:
+- Prerequisites & installation (macOS, Linux, Windows)
+- Environment variable configuration
+- Local development (4 terminals)
+- GitHub Codespaces setup
+- Troubleshooting (15+ solutions)
+- Verification checklist
+
+
+
+## �📚 Documentation
 
 Detailed documentation and status reports are available in the [docs/](./docs/) folder.
+### Setup & Development Guides
+
+| Document | Purpose |
+|----------|---------|
+| **[SETUP.md](./SETUP.md)** | 📖 **Main Guide** - Complete setup for Codespaces & local dev |
+| [HOW-TO-RUN.md](./HOW-TO-RUN.md) | Step-by-step guide with detailed explanations |
+| [QUICK-START.md](./QUICK-START.md) | 30-second TL;DR version |
+| [QUICK-REFERENCE.md](./QUICK-REFERENCE.md) | Command cheat sheet |
+| [.devcontainer/CODESPACES.md](./.devcontainer/CODESPACES.md) | GitHub Codespaces setup details |
+| [START-EMULATORS.md](./START-EMULATORS.md) | Firebase emulator troubleshooting |
+
+### Project Documentation
+
+- **[Project Blueprint](./docs/00-PROJECT-BLUEPRINT.md)** - Architecture and system design
+- **[Database Guide](./docs/04-DATABASE-AND-DATA-FLOW.md)** - Data flow and Firestore structure
+- **[Authentication Setup](./docs/Auth/)** - Auth implementation details
+- **[OpenSpec](./openspec/project.md)** - Technical specifications and project structure
 
 ## 📄 License
 
