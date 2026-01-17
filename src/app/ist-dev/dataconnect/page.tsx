@@ -50,14 +50,14 @@ export default function IstDataconnectDebugPage() {
         <input
           type="text"
           name="userId"
-          defaultValue="demo-user"
+          defaultValue="user-placeholder"
           placeholder="userId"
           className="border px-2 py-1 rounded text-black"
         />
         <input
           type="text"
           name="courseId"
-          defaultValue="cs202"
+          defaultValue="cs101"
           placeholder="courseId"
           className="border px-2 py-1 rounded text-black"
         />

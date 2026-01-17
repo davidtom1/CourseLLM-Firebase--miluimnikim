@@ -48,7 +48,12 @@ function getOrInitDataConnect() {
     const dc = getDataConnect(app, connectorConfig);
 
     // 3. Connect to Emulator (Safe Mode)
-    if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true" && !emulatorConnected) {
+    // Note: NEXT_PUBLIC_ vars work on client, but on server we check NODE_ENV or explicit server-side var
+    const useEmulator = process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true"
+      || process.env.FIREBASE_USE_EMULATOR === "true"
+      || process.env.NODE_ENV === "development";
+
+    if (useEmulator && !emulatorConnected) {
       try {
         connectDataConnectEmulator(dc, "127.0.0.1", 9400, false);
         emulatorConnected = true;
