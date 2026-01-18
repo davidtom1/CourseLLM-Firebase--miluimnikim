@@ -1,4 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { resetFirestoreEmulator } from './utils/test-helpers';
+
+test.beforeEach(async ({ page }) => {
+  // Clear state before each test
+  await page.context().clearCookies();
+  await resetFirestoreEmulator();
+});
 
 test('1 - first login redirects to onboarding', async ({ page, request }) => {
   const res = await request.get('http://localhost:9002/api/test-token?uid=first-login-1&createProfile=false');

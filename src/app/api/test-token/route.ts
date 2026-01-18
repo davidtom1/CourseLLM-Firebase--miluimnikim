@@ -6,9 +6,30 @@ import admin from "firebase-admin";
 // Guard this route so it's only available during test runs.
 const ENABLED = process.env.ENABLE_TEST_AUTH === "true";
 
+// Detect if running in emulator mode
+const USE_EMULATOR =
+  process.env.FIREBASE_AUTH_EMULATOR_HOST ||
+  process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATOR === "true";
+
 function initAdmin() {
   if (admin.apps.length) return admin;
 
+  // In emulator mode, we can initialize without real credentials
+  if (USE_EMULATOR) {
+    console.log("[test-token] Running in EMULATOR mode - initializing without service account");
+
+    // CRITICAL: Explicitly configure Admin SDK to use emulators
+    // Using 127.0.0.1 instead of localhost to avoid Node 17+ IPv6 issues
+    process.env.FIRESTORE_EMULATOR_HOST = "127.0.0.1:8080";
+    process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+
+    admin.initializeApp({
+      projectId: process.env.FIREBASE_PROJECT_ID || "coursewise-f2421"
+    });
+    return admin;
+  }
+
+  // Production mode: require real service account credentials
   let serviceAccount: admin.ServiceAccount | null = null;
   if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
     try {
