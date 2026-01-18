@@ -10,7 +10,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { resetFirestoreEmulator } from '../utils/test-helpers';
+import { resetFirestoreEmulator, waitForRateLimit, RATE_LIMIT_DELAY } from '../utils/test-helpers';
 
 test.describe('Teacher Analytics', () => {
   test.beforeEach(async ({ page }) => {
@@ -27,7 +27,7 @@ test.describe('Teacher Analytics', () => {
       'http://localhost:9002/api/test-token?uid=e2e-teacher-analytics&role=teacher&createProfile=true'
     );
     expect(tokenResponse.ok()).toBeTruthy();
-    
+
     const { token } = await tokenResponse.json();
     expect(token).toBeTruthy();
 
@@ -35,23 +35,23 @@ test.describe('Teacher Analytics', () => {
 
     // Wait for redirect to teacher area
     await page.waitForURL('**/teacher**', { timeout: 15000 });
-    
+
     // Verify we're in the teacher section
     expect(page.url()).toContain('/teacher');
 
     // =========================================
     // STEP 2: Verify Dashboard Content
     // =========================================
-    // Should see Analytics Overview heading
-    await expect(page.locator('text=Analytics Overview')).toBeVisible({ timeout: 10000 });
+    // Should see Teacher Dashboard heading (not "Analytics Overview" which is on /teacher/dashboard)
+    await expect(page.locator('h1', { hasText: 'Teacher Dashboard' })).toBeVisible({ timeout: 10000 });
 
     // Should see dashboard cards
     await expect(page.locator('text=Total Students')).toBeVisible();
-    await expect(page.locator('text=At-Risk Students')).toBeVisible();
-    await expect(page.locator('text=Most Practiced Topic')).toBeVisible();
+    await expect(page.locator('text=Active Courses')).toBeVisible();
+    await expect(page.locator('text=Total Questions Asked')).toBeVisible();
 
-    // Should see the analytics chart section
-    await expect(page.locator('text=Average Mastery Level per Topic')).toBeVisible();
+    // Should see the engagement chart section
+    await expect(page.locator('text=Student Engagement')).toBeVisible();
   });
 
   test('RBAC - teacher blocked from student routes', async ({ page, request }) => {
@@ -73,7 +73,7 @@ test.describe('Teacher Analytics', () => {
 
     // Should be redirected back to teacher area (not allowed in student section)
     await page.waitForURL('**/teacher**', { timeout: 10000 });
-    
+
     // Verify we're still in teacher section
     expect(page.url()).toContain('/teacher');
     expect(page.url()).not.toContain('/student');
@@ -96,8 +96,9 @@ test.describe('Teacher Analytics', () => {
     // =========================================
     await page.goto('http://localhost:9002/teacher/courses/cs-demo-101');
 
-    // Wait for page to load
-    await expect(page.locator('text=IST Class Report')).toBeVisible({ timeout: 10000 });
+    // Wait for page to load and click the IST Report tab (button is inside this tab)
+    await expect(page.locator('button[role="tab"]', { hasText: 'IST Class Report' })).toBeVisible({ timeout: 10000 });
+    await page.click('button[role="tab"]:has-text("IST Class Report")');
 
     // =========================================
     // STEP 3: Generate Report
@@ -106,6 +107,8 @@ test.describe('Teacher Analytics', () => {
     await expect(generateButton).toBeVisible();
     await expect(generateButton).toBeEnabled();
 
+    // Rate limit protection before triggering report generation
+    await waitForRateLimit(page, RATE_LIMIT_DELAY);
     await generateButton.click();
 
     // =========================================
@@ -139,17 +142,21 @@ test.describe('Teacher Analytics', () => {
 
     // Navigate to course
     await page.goto('http://localhost:9002/teacher/courses/cs-demo-101');
-    await expect(page.locator('text=IST Class Report')).toBeVisible({ timeout: 10000 });
 
-    // Generate report
+    // Click IST Report tab first
+    await expect(page.locator('button[role="tab"]', { hasText: 'IST Class Report' })).toBeVisible({ timeout: 10000 });
+    await page.click('button[role="tab"]:has-text("IST Class Report")');
+
+    // Rate limit protection and generate report
+    await waitForRateLimit(page, RATE_LIMIT_DELAY);
     await page.click('button:has-text("Generate IST Class Report")');
 
     // Wait for trends section
     await expect(page.locator('text=Trends')).toBeVisible({ timeout: 15000 });
 
-    // Check for trend indicators
-    await expect(page.locator('text=Last 7 days')).toBeVisible();
-    await expect(page.locator('text=Prev 7 days')).toBeVisible();
+    // Check for trend indicators (target table cells specifically to avoid strict mode violation)
+    await expect(page.locator('td', { hasText: 'Last 7 days' })).toBeVisible();
+    await expect(page.locator('td', { hasText: 'Prev 7 days' })).toBeVisible();
   });
 
   test('report shows data quality metrics', async ({ page, request }) => {
@@ -165,7 +172,11 @@ test.describe('Teacher Analytics', () => {
     // Navigate to course
     await page.goto('http://localhost:9002/teacher/courses/cs-demo-101');
 
-    // Generate report
+    // Click IST Report tab first
+    await page.click('button[role="tab"]:has-text("IST Class Report")');
+
+    // Rate limit protection and generate report
+    await waitForRateLimit(page, RATE_LIMIT_DELAY);
     await page.click('button:has-text("Generate IST Class Report")');
 
     // Wait for data quality section
@@ -190,7 +201,7 @@ test.describe('Teacher Analytics', () => {
 
     // Verify materials page loads (even if it shows placeholder content)
     await page.waitForLoadState('networkidle');
-    
+
     // Should be on materials page
     expect(page.url()).toContain('/teacher/materials');
   });

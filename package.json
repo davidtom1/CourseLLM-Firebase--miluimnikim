@@ -15,7 +15,8 @@
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
     "postinstall": "cd dataconnect && firebase dataconnect:sdk:generate || echo 'DataConnect SDK generation skipped (no Firebase CLI or offline)'",
-    "dataconnect:generate": "cd dataconnect && firebase dataconnect:sdk:generate"
+    "dataconnect:generate": "cd dataconnect && firebase dataconnect:sdk:generate",
+    "ensure-emulators": "npx wait-on tcp:9099 tcp:8080 tcp:5001 --timeout 5000 || firebase emulators:start --only functions,firestore,auth,dataconnect"
   },
   "dependencies": {
     "@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",

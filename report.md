@@ -77,14 +77,17 @@ Create comprehensive documentation for all major features using the OpenSpec for
 ```
 openspec/
 ├── ist/
+│   ├── proposal.md  # Feature rationale, impact analysis, decision
 │   ├── spec.md      # Requirements, user stories, API contracts
 │   ├── design.md    # Architecture, component design, data flow
 │   └── plan.md      # Implementation roadmap, risk assessment
 ├── chat/
+│   ├── proposal.md
 │   ├── spec.md
 │   ├── design.md
 │   └── plan.md
 └── analytics/
+    ├── proposal.md
     ├── spec.md
     ├── design.md
     └── plan.md
@@ -232,6 +235,72 @@ RESULT: ALL TESTS PASSED
    - Chat could benefit from token streaming
    - Would improve perceived latency
 
+### 🤖 AI Workflow Reflection (Per Professor's Request)
+
+#### Prompts That Worked
+
+1. **Architecture Auditing**
+   > *"Act as a Senior Architect and audit this folder against strict SOLID principles. Identify violations and suggest refactoring."*
+   
+   Used for refactoring `src/features/ist/` - AI correctly identified that extraction, storage, and presentation were tightly coupled and suggested the repository pattern.
+
+2. **Test Generation**
+   > *"Generate a robust Playwright E2E test for this React component that: 1) Uses mock authentication, 2) Waits for async state updates, 3) Handles rate limiting gracefully."*
+   
+   Used for `student-journey.spec.ts` - AI produced a working test skeleton that we refined for flakiness.
+
+3. **Documentation Generation**
+   > *"Create an OpenSpec-compliant spec.md for this feature. Include: user stories from teacher/student perspectives, functional requirements with SHALL/MUST wording, API contracts with TypeScript types."*
+   
+   AI generated comprehensive specs that needed minimal editing for project-specific context.
+
+#### Manual Interventions Required
+
+1. **Jest Setup for Radix UI**
+   - AI struggled to configure `jest.setup.js` correctly for Radix UI components
+   - ResizeObserver and ScrollArea mocks required manual patching
+   - Solution: Custom `console.error` filter to suppress known async warnings
+
+2. **Import Path Enforcement**
+   - AI often hallucinated imports from `src/functions/` (legacy Firebase Functions path)
+   - Had to manually correct to `src/shared/` or `src/features/`
+   - Added `.eslintignore` and strict TypeScript paths to prevent recurrence
+
+3. **DataConnect SDK Regeneration**
+   - AI didn't understand that `src/dataconnect-generated/` should never be committed
+   - Manually created `.gitignore` rules and `agent.md` policy documentation
+
+4. **Firestore Subscription Cleanup**
+   - AI-generated code often forgot `unsubscribe()` in useEffect cleanup
+   - Had to manually audit all `onSnapshot` usages for memory leaks
+
+#### Frustrations
+
+1. **E2E Test Flakiness**
+   - Generating clean, non-flaky Playwright tests required 3-4 iterations
+   - AI underestimated timing issues with Firebase emulators
+   - Had to add explicit `waitFor` and rate-limit delays manually
+
+2. **"Slope" Management**
+   - AI tended to leave unused variables, commented-out code, and TODO placeholders
+   - Required dedicated cleanup pass to remove ~50 files to `_unused_quarantine/`
+   - AI didn't proactively suggest removing dead code
+
+3. **Mock Complexity**
+   - Jest mocks for Firebase and Genkit were overly complex in AI's initial attempts
+   - Simplified by creating dedicated `__mocks__/` directory with reusable mocks
+
+4. **Context Window Limits**
+   - Large files (>500 lines) caused AI to "forget" earlier context
+   - Had to break refactoring into smaller, focused sessions
+
+#### What I Wish Would Be Different
+
+1. **Better Test Awareness**: AI should understand that tests need cleanup/teardown, not just setup
+2. **Stricter Import Validation**: AI should validate imports against actual file structure
+3. **Proactive Slope Detection**: AI should flag unused exports and dead code paths
+4. **Emulator-Aware Testing**: Better understanding of Firebase emulator lifecycle
+
 ---
 
 ## Deliverables Summary
@@ -240,12 +309,15 @@ RESULT: ALL TESTS PASSED
 
 | File | Purpose |
 |------|---------|
+| `openspec/ist/proposal.md` | IST feature rationale and decision |
 | `openspec/ist/spec.md` | IST feature specification |
 | `openspec/ist/design.md` | IST architecture documentation |
 | `openspec/ist/plan.md` | IST implementation roadmap |
+| `openspec/chat/proposal.md` | Chat feature rationale and decision |
 | `openspec/chat/spec.md` | Chat feature specification |
 | `openspec/chat/design.md` | Chat architecture documentation |
 | `openspec/chat/plan.md` | Chat implementation roadmap |
+| `openspec/analytics/proposal.md` | Analytics feature rationale and decision |
 | `openspec/analytics/spec.md` | Analytics feature specification |
 | `openspec/analytics/design.md` | Analytics architecture documentation |
 | `openspec/analytics/plan.md` | Analytics implementation roadmap |

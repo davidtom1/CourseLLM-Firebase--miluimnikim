@@ -1,0 +1,35 @@
+CONTEXT FOR NEXT SESSION: SURGICAL E2E REPAIR
+
+Current State: We are in the middle of a surgical repair of the E2E test suite. We moved away from running the full verify:win script and are verifying suites individually.
+
+✅ Phase 1: Chat Context (chat-context.spec.ts) - COMPLETE
+
+Status: All 4 tests passed.
+
+Key Logic: Uses Random UIDs to prevent state pollution. Skips the flaky /login redirect and navigates directly to the course page.
+
+🚧 Phase 2: Student Journey (student-journey.spec.ts) - NEXT UP
+
+Goal: Verify full chat flow with AI.
+
+Risk: Gemini Free Tier Rate Limits (429).
+
+Instruction: Run npx playwright test tests/e2e/student-journey.spec.ts. If it fails on timeout/rate limit, verify that the 5-second throttling waitForTimeout is working correctly.
+
+🚧 Phase 3: Teacher Analytics (teacher-analytics.spec.ts) - PENDING
+
+Goal: Verify Dashboard and Reporting.
+
+Known Issue: Frontend fails to connect to Data Connect Emulator (Port 9400).
+
+Instruction: Debug src/lib/dataconnect.ts configuration for emulator environment.
+
+🛠️ How to Work (Critical):
+
+Do NOT run npm run verify:win immediately.
+
+Infrastructure: Open Terminal 1 and run scripts\start-servers.bat. Wait for "SERVERS READY".
+
+Testing: Open Terminal 2 and run specific test suites (e.g., npx playwright test tests/e2e/student-journey.spec.ts).
+
+Last Action: We just finished Phase 1 successfully using Random UIDs and direct navigation.

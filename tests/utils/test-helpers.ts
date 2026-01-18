@@ -13,14 +13,14 @@
 export async function resetFirestoreEmulator() {
   const emulatorHost = process.env.FIRESTORE_EMULATOR_HOST || '127.0.0.1:8080';
   const projectId = process.env.FIREBASE_PROJECT_ID || 'coursewise-f2421';
-  
+
   const url = `http://${emulatorHost}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
-  
+
   try {
     const response = await fetch(url, {
       method: 'DELETE',
     });
-    
+
     if (response.ok) {
       console.log('[Reset] Firestore emulator cleared successfully');
     } else {
@@ -39,14 +39,14 @@ export async function resetFirestoreEmulator() {
 export async function resetChatData() {
   const emulatorHost = process.env.FIRESTORE_EMULATOR_HOST || '127.0.0.1:8080';
   const projectId = process.env.FIREBASE_PROJECT_ID || 'coursewise-f2421';
-  
+
   // Collections to clear (add more as needed)
   const collectionsToReset = ['messages', 'threads', 'messageAnalysis'];
-  
+
   try {
     for (const collection of collectionsToReset) {
       const url = `http://${emulatorHost}/emulator/v1/projects/${projectId}/databases/(default)/documents/${collection}`;
-      
+
       try {
         const response = await fetch(url, { method: 'DELETE' });
         if (response.ok || response.status === 404) {
@@ -75,7 +75,7 @@ export async function ensureTestUserProfiles() {
   // Use the test-token API to create profiles for the standard test users
   // These UIDs must match what gets created when Mock Login is used
   const baseUrl = 'http://localhost:9002';
-  
+
   const users = [
     { role: 'student', uid: 'mock-student-uid' },
     { role: 'teacher', uid: 'mock-teacher-uid' },
@@ -85,7 +85,7 @@ export async function ensureTestUserProfiles() {
     for (const user of users) {
       const url = `${baseUrl}/api/test-token?uid=${user.uid}&role=${user.role}&createProfile=true`;
       const response = await fetch(url);
-      
+
       if (response.ok) {
         console.log(`[Setup] Created profile for ${user.role}`);
       } else {
@@ -97,13 +97,22 @@ export async function ensureTestUserProfiles() {
   }
 }
 
+import { Page } from '@playwright/test';
+
+/**
+ * Delay for OpenAI/Gemini Rate Limits (20 seconds)
+ * Use this before triggering any AI operation in tests.
+ */
+export const RATE_LIMIT_DELAY = 20000;
+
 /**
  * Adds a delay to respect API rate limits (Gemini Free Tier: ~15 RPM)
  * 
- * @param ms - Milliseconds to wait (default: 5000ms = 5 seconds)
+ * @param page - Playwright Page object
+ * @param delay - Milliseconds to wait (default: RATE_LIMIT_DELAY)
  */
-export async function waitForRateLimit(ms: number = 5000) {
-  console.log(`[Rate Limit] Waiting ${ms}ms before next API call...`);
-  await new Promise(resolve => setTimeout(resolve, ms));
+export async function waitForRateLimit(page: Page, delay = RATE_LIMIT_DELAY) {
+  console.log(`[Rate Limit] Buffering execution for ${delay}ms...`);
+  await page.waitForTimeout(delay);
 }
 
