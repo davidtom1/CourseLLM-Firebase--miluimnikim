@@ -72,6 +72,13 @@ Detailed documentation and status reports are available in the [docs/](./docs/) 
 - **[Authentication Setup](./docs/Auth/)** - Auth implementation details
 - **[OpenSpec](./openspec/project.md)** - Technical specifications and project structure
 
+### Testing Documentation
+
+| Document | Purpose |
+|----------|---------|
+| **[docs/testing-ist.md](./docs/testing-ist.md)** | IST feature testing guide - E2E and integration tests |
+| **[dspy_service/TESTING.md](./dspy_service/TESTING.md)** | Python DSPy service testing - pytest and API tests |
+
 ## 📄 License
 
 Private educational project - not for redistribution.

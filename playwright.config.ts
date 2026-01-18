@@ -43,7 +43,7 @@ export default defineConfig({
   // Shared settings for all projects
   use: {
     baseURL: 'http://localhost:9002',
-    headless: true,
+    headless: false,
     viewport: { width: 1280, height: 800 },
     ignoreHTTPSErrors: true,
 
