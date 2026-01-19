@@ -55,7 +55,7 @@ npm run dev
 
 ### Signing In
 
-1. Open [http://localhost:3000/login](http://localhost:3000/login)
+1. Open [http://localhost:9002/login](http://localhost:9002/login)
 2. Click **"Mock Student"** or **"Mock Teacher"** button
 3. You'll be signed in with proper Firebase auth tokens
 4. You'll be redirected to the appropriate dashboard

@@ -105,6 +105,14 @@ const socraticCourseChatFlow = ai.defineFlow(
       };
     }
 
+    // Guard: Handle cases where the model returns null/empty (e.g. 503 or content filter)
+    if (!output || !output.response) {
+      console.warn('[socratic-course-chat] Model returned null/empty output, using fallback');
+      return {
+        response: "The AI tutor is temporarily unavailable due to high load. Please try asking your question again in a moment.",
+      };
+    }
+
     const complianceResult = await enforceCompliance({
       courseMaterial: input.courseMaterial,
       response: output!.response,

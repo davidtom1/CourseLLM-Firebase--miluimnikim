@@ -86,7 +86,7 @@ npm run dev
 **Wait for:**
 ```
 ✓ Ready in Xs
-○ Local:   http://localhost:3000
+○ Local:   http://localhost:9002
 ```
 
 ---
@@ -95,9 +95,9 @@ npm run dev
 
 ### 1. Open Your Browser
 
-Navigate to: **http://localhost:3000**
+Navigate to: **http://localhost:9002**
 
-You'll be automatically redirected to: **http://localhost:3000/login**
+You'll be automatically redirected to: **http://localhost:9002/login**
 
 ---
 
@@ -157,7 +157,7 @@ When everything is started correctly:
 | Service | URL | Purpose |
 |---------|-----|---------|
 | **DSPy Service** | http://localhost:8000 | AI/LLM for Intent-Skill-Trajectory |
-| **Next.js App** | http://localhost:3000 | Main application |
+| **Next.js App** | http://localhost:9002 | Main application |
 | **Emulator UI** | http://127.0.0.1:4000 | View Firebase data |
 | Auth Emulator | 127.0.0.1:9099 | Authentication |
 | Firestore Emulator | 127.0.0.1:8080 | Database |
@@ -408,13 +408,13 @@ node scripts/seed-test-users.js
 npm run dev
 
 # Check what's running
-netstat -ano | findstr "3000 8000 9099 8080 9400"
+netstat -ano | findstr "9002 8000 9099 8080 9400"
 
 # View emulator UI
 start http://127.0.0.1:4000
 
 # View app
-start http://localhost:3000
+start http://localhost:9002
 
 # Stop everything
 # Ctrl+C in each terminal, or:

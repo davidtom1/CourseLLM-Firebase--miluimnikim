@@ -4,6 +4,9 @@
   "private": true,
  "scripts": {
     "dev": "next dev --turbopack -p 9002",
+    "dev:full": "node -e \"process.platform === 'win32' ? require('child_process').execSync('scripts\\\\start-servers.bat', {stdio: 'inherit'}) : require('child_process').execSync('bash scripts/start-servers.sh', {stdio: 'inherit'})\"",
+    "dev:win": "scripts\\start-servers.bat",
+    "dev:linux": "bash scripts/start-servers.sh",
     "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",

@@ -352,7 +352,7 @@ npm run dev
 
 **Expected output:**
 - "Ready in X ms"
-- URL where app is running (usually http://localhost:3000)
+- URL where app is running (http://localhost:9002)
 - No compilation errors
 
 **Watch for successful compilation of:**
@@ -361,7 +361,7 @@ npm run dev
 - Other IST-related pages
 
 **Common issues:**
-- Port 3000 in use: Server will auto-select different port (e.g., 3001)
+- Port 9002 in use: Server will auto-select different port (e.g., 9003)
 - Compilation errors: Show errors to user and debug
 - Module not found: Run `npm install` again
 
@@ -378,7 +378,7 @@ npm run dev
 Ask user to confirm all 3 terminals show active running services:
 - Terminal 1: Firebase emulators running
 - Terminal 2: DSPy service running on port 8000
-- Terminal 3: Next.js running (usually port 3000)
+- Terminal 3: Next.js running on port 9002
 
 ### 6.2. Test Firebase Emulator UI
 
@@ -394,13 +394,13 @@ Ask user to confirm all 3 terminals show active running services:
 
 ### 6.4. Test Next.js Application
 
-**Instruct user:** Open http://localhost:3000 (or whichever port Next.js started on)
+**Instruct user:** Open http://localhost:9002 (or whichever port Next.js started on)
 
 **Expected:** Application should load without errors
 
 ### 6.5. Test IST DataConnect Debug Page
 
-**Instruct user:** Navigate to http://localhost:3000/ist-dev/dataconnect
+**Instruct user:** Navigate to http://localhost:9002/ist-dev/dataconnect
 
 **Expected:** Page should load showing a form with:
 - userId input (default: demo-user)
@@ -451,7 +451,7 @@ In Terminal 1 (Firebase emulators), watch for output like:
 
 ### 7.3. Verify data was saved to DataConnect
 
-**Instruct user:** Go to http://localhost:3000/ist-dev/dataconnect
+**Instruct user:** Go to http://localhost:9002/ist-dev/dataconnect
 - Enter userId: demo-user (or the user ID from test)
 - Enter courseId: cs202 (or the course ID from test)
 - Click "Load IST Events"
@@ -632,8 +632,8 @@ pip install -r requirements.txt
 - [ ] All URLs accessible in browser:
   - [ ] http://127.0.0.1:4000 (Emulator UI)
   - [ ] http://localhost:8000/docs (DSPy API docs)
-  - [ ] http://localhost:3000 (Next.js app)
-  - [ ] http://localhost:3000/ist-dev/dataconnect (IST debug page)
+  - [ ] http://localhost:9002 (Next.js app)
+  - [ ] http://localhost:9002/ist-dev/dataconnect (IST debug page)
 
 - [ ] No red errors in:
   - [ ] Any terminal output

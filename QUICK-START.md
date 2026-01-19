@@ -12,7 +12,7 @@
 cd dspy_service
 .\venv\Scripts\activate
 $Env:LLM_PROVIDER = "gemini"
-$Env:GEMINI_API_KEY = "AIzaSyBUdUiRpBlNj16AnrCIJ1VCvveTyS3op7w"
+$Env:GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
 python -m uvicorn app:app --reload --port 8000
 ```
 
@@ -46,13 +46,13 @@ node scripts/seed-test-users.js
 npm run dev
 ```
 
-**Wait for:** `✓ Ready` and `○ Local: http://localhost:3000`
+**Wait for:** `✓ Ready` and `○ Local: http://localhost:9002`
 
 ---
 
 ## ✅ Then Open Browser
 
-Go to: **http://localhost:3000**
+Go to: **http://localhost:9002**
 
 Click: **"Mock Student"** or **"Mock Teacher"**
 
@@ -69,7 +69,7 @@ Login credentials:
 | 1 | DSPy | 8000 | AI for Intent-Skill-Trajectory analysis |
 | 2 | Firebase | 9099, 8080, 9400 | Auth, Database, IST storage |
 | 3 | Seed | - | Creates test users (run once per session) |
-| 4 | Next.js | 3000 | Your web app |
+| 4 | Next.js | 9002 | Your web app |
 
 ---
 
@@ -132,7 +132,7 @@ See [HOW-TO-RUN.md](HOW-TO-RUN.md) for detailed explanations, troubleshooting, a
 Invoke-RestMethod "http://localhost:8000/health"
 
 # Test Next.js
-Invoke-RestMethod "http://localhost:3000"
+Invoke-RestMethod "http://localhost:9002"
 
 # View Firebase Emulator UI
 start http://127.0.0.1:4000
