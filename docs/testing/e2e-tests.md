@@ -50,32 +50,65 @@ This creates:
 
 ### Linux / macOS
 
-```bash
-# Run all E2E tests
-npm run test:e2e
+Run tests by type (recommended - prevents system overload):
 
-# Run specific test file
+```bash
+# 1. Authentication & RBAC Tests
 npx playwright test tests/auth.spec.ts
 
+# 2. Student Journey Tests (Chat & IST Flow)
+npx playwright test tests/e2e/student-journey.spec.ts
+
+# 3. Chat Context Tests (Multi-turn conversation)
+npx playwright test tests/e2e/chat-context.spec.ts
+
+# 4. Teacher Analytics Tests
+npx playwright test tests/e2e/teacher-analytics.spec.ts
+```
+
+Additional options:
+
+```bash
 # Run tests with UI mode (interactive)
 npx playwright test --ui
 
 # Run tests with debug mode
 npx playwright test --debug
+
+# Run with HTML report
+npx playwright test --reporter=html
 ```
 
 ### Windows (PowerShell)
 
+Set environment variables once:
+
 ```powershell
-# Set environment variables
 $Env:ENABLE_TEST_AUTH = "true"
 $Env:NEXT_PUBLIC_FIREBASE_USE_EMULATOR = "true"
+```
 
-# Run all E2E tests
-npm run test:e2e
+Run tests by type (recommended - prevents system overload):
 
-# Run specific test file
+```powershell
+# 1. Authentication & RBAC Tests
 npx playwright test tests/auth.spec.ts
+
+# 2. Student Journey Tests (Chat & IST Flow)
+npx playwright test tests/e2e/student-journey.spec.ts
+
+# 3. Chat Context Tests (Multi-turn conversation)
+npx playwright test tests/e2e/chat-context.spec.ts
+
+# 4. Teacher Analytics Tests
+npx playwright test tests/e2e/teacher-analytics.spec.ts
+```
+
+Additional options:
+
+```powershell
+# Run tests with UI mode (interactive)
+npx playwright test --ui
 
 # Run with HTML report
 npx playwright test --reporter=html
