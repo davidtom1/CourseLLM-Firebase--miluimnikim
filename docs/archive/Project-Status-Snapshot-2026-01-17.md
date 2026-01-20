@@ -39,7 +39,7 @@ Successfully resolved cascading E2E test failures by addressing three critical i
 scripts\start-servers.bat
 
 # Terminal 2: Iterate on tests
-npx playwright test tests/e2e/chat-context.spec.ts
+npx playwright test
 ```
 
 **Benefits:**

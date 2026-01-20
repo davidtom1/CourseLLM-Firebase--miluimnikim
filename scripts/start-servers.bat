@@ -295,7 +295,7 @@ echo   • Firebase_Emulators
 echo   • NextJS_Server
 echo.
 echo To run E2E tests:
-echo   npx playwright test tests/e2e/chat-context.spec.ts
+echo   npx playwright test
 echo.
 echo To stop all servers:
 echo   1. Close this window - will trigger cleanup

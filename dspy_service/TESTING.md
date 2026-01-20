@@ -1,68 +1,47 @@
-## Running the Tests
+# DSPy Service Testing
 
-### Installation
+> **Canonical Documentation**: For complete testing documentation including setup instructions, manual verification, and troubleshooting, see **[docs/testing/backend-tests.md](../docs/testing/backend-tests.md)**.
 
-Install test dependencies:
+## Quick Reference
+
+### Run All Tests
+
 ```bash
-# Using pip
-pip install -r requirements.txt
-
-# Or using uv (if you have it installed)
-uv add --dev pytest httpx
+cd dspy_service
+pytest
 ```
 
-### Running Tests
+### Run by Marker
 
 ```bash
-# Run all tests
-pytest
+pytest -m health         # Health check tests
+pytest -m ist_api        # IST API tests
+pytest -m integration    # Integration tests
+```
 
-# Run with verbose output
-pytest -v
+### Run with Coverage
 
-# Run specific test file
-pytest tests/test_ist_api.py
-
-# Run specific test class
-pytest tests/test_ist_api.py::TestHealthEndpoint
-
-# Run specific test
-pytest tests/test_ist_api.py::TestHealthEndpoint::test_health_check_returns_200
-
-# Run tests matching a marker
-pytest -m ist_api        # Run IST API tests
-pytest -m health         # Run health check tests
-pytest -m integration    # Run integration tests
-
-# Run tests with coverage
+```bash
 pytest --cov=. --cov-report=html
-
-# Run tests in parallel (requires pytest-xdist)
-pytest -n auto
 ```
 
 ### Test Organization
 
-Tests are organized by markers:
-- `@pytest.mark.health` - Health check endpoint tests
-- `@pytest.mark.ist_api` - IST API endpoint tests
-- `@pytest.mark.integration` - Integration tests
-- `@pytest.mark.unit` - Unit tests
+| Marker | Description |
+|--------|-------------|
+| `@pytest.mark.health` | Health check endpoint tests |
+| `@pytest.mark.ist_api` | IST API endpoint tests |
+| `@pytest.mark.integration` | Integration tests |
+| `@pytest.mark.unit` | Unit tests |
 
-### Test Structure
+### Test Files
 
-- **Health Endpoint Tests**: Verify `/health` returns correct status and structure
-- **IST API Basic Tests**: Verify response status, JSON validity, required fields
-- **IST API Extended Context**: Test with chat history, IST history, student profiles
-- **Error Handling Tests**: Test validation errors and edge cases
-- **Statelessness Tests**: Verify requests don't create side effects
-- **Integration Tests**: Test complete workflows
-- **Edge Case Tests**: Test with long/special/Unicode characters
+| File | Purpose |
+|------|---------|
+| `tests/test_ist_api.py` | Main test suite |
+| `conftest.py` | Pytest fixtures |
+| `pytest.ini` | Pytest configuration |
 
-### Mocking
+---
 
-Tests use `mock_ist_extractor` fixture (autouse=True) that:
-- Mocks the DSPy module initialization
-- Returns consistent test data
-- Avoids real LLM API calls
-- Automatically cleans up after each test
+For detailed documentation, see [docs/testing/backend-tests.md](../docs/testing/backend-tests.md).

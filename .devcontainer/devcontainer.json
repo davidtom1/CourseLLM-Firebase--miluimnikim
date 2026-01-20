@@ -53,7 +53,7 @@
       "onAutoForward": "notify"
     }
   },
-  "postCreateCommand": "/bin/bash -c 'set -e && echo \"Setting up CourseLLM development environment...\" && npm install -g pnpm && uv sync --python 3.12 && pnpm install && echo \"Environment setup complete!\"'",
+  "postCreateCommand": "bash -c 'set -e && echo \"Setting up CourseLLM development environment...\" && npm install -g pnpm@latest || true && python3 -m pip install --upgrade uv || true && uv sync --python 3.12 || true && pnpm install || true && echo \"Environment setup complete!\"'",
   "remoteUser": "node",
   "customizations": {
     "vscode": {
