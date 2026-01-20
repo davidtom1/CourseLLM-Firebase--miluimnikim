@@ -39,17 +39,15 @@ python --version  # Should show 3.12.x or higher
 java -version     # Should show 11 or higher
 ```
 
-### Fastest Local Setup (5 Steps)
+### Fastest Local Setup (6 Steps)
 
 1. **Clone the repository**:
-
-2. **Clone the repository**:
    ```bash
    git clone https://github.com/LLMs-for-SE-2026-BGU/CourseLLM-Firebase.git
    cd CourseLLM-Firebase
    ```
 
-3. **Create environment files**:
+2. **Create environment files**:
    ```bash
    # Main app environment
    cp .env.example .env.local
@@ -59,18 +57,19 @@ java -version     # Should show 11 or higher
    ```
    Then add your Google API key to BOTH files (see [Environment Configuration](#environment-configuration))
 
-4. **Install npm dependencies** (first time only):
+3. **Install dependencies and generate DataConnect SDK**:
    ```bash
    npm install
+   npm run dataconnect:generate
    ```
 
-5. **Run the automated setup script**:
+4. **Run the automated setup script**:
    ```bash
    ./scripts/start-servers.sh        # Linux/macOS
    .\scripts\start-servers.bat       # Windows (PowerShell)
    ```
 
-6. **Open the app**: http://localhost:9002
+5. **Open the app**: http://localhost:9002
    - Login with `student@test.com` / `password123`
 
 **That's it.** If this works, you do NOT need to read the rest of this document.
@@ -154,6 +153,7 @@ Ensure you have completed:
 1. **Installed prerequisites** (see [Prerequisites](#prerequisites) above)
 2. **Created both environment files** with your API key (see [Environment Configuration](#environment-configuration))
 3. **Run `npm install`** at least once
+4. **Run `npm run dataconnect:generate`** to generate the DataConnect SDK
 
 ### Linux / macOS
 
