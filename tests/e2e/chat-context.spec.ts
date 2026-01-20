@@ -120,13 +120,13 @@ test.describe('Chat Context Retention', () => {
     console.log('[TEST] User message 1 visible');
 
     // Wait for AI response (Turn 1)
-    await expect(page.locator('.bg-muted').first()).toBeVisible({
+    await expect(page.locator('[data-testid="bot-message"]').first()).toBeVisible({
       timeout: 60000,
     });
     console.log('[TEST] Bot response 1 received');
 
     // Verify the first response has content
-    const firstResponse = page.locator('.bg-muted').first();
+    const firstResponse = page.locator('[data-testid="bot-message"]').first();
     const firstResponseText = await firstResponse.textContent();
     expect(firstResponseText).toBeTruthy();
     console.log('[TEST] First response length:', firstResponseText?.length);
@@ -151,19 +151,16 @@ test.describe('Chat Context Retention', () => {
     console.log('[TEST] User message 2 visible');
 
     // Wait for the second AI response to appear
-    // The .bg-muted selector matches multiple UI components (thinking, content, IST widgets)
-    // So instead of counting, we verify that we have MORE bot messages than before
+    // Use data-testid="bot-message" to specifically target bot message bubbles
+    // (avoids matching avatars and other bg-muted elements)
     console.log('[TEST] Waiting for second bot response...');
-    await page.waitForTimeout(2000); // Allow time for response
     
-    // Verify we have at least 2 distinct bot message containers
-    // (each response may have multiple .bg-muted elements)
-    const allBotElements = page.locator('.bg-muted');
-    const botElementCount = await allBotElements.count();
-    console.log(`[TEST] Total .bg-muted elements after Turn 2: ${botElementCount}`);
+    // Wait for 2 bot messages to be present
+    const allBotMessages = page.locator('[data-testid="bot-message"]');
+    await expect(allBotMessages).toHaveCount(2, { timeout: 60000 });
     
-    // Instead of exact count, verify we have multiple responses (at least 2+)
-    expect(botElementCount).toBeGreaterThanOrEqual(2);
+    const botMessageCount = await allBotMessages.count();
+    console.log(`[TEST] Total bot messages after Turn 2: ${botMessageCount}`);
     console.log('[TEST] Bot response 2 received (verified by element count)');
 
     // =========================================
@@ -175,7 +172,7 @@ test.describe('Chat Context Retention', () => {
     // - "Python" (the language requested)
     // - Code examples with array-related syntax
 
-    const secondResponse = allBotElements.last();
+    const secondResponse = allBotMessages.last();
     await expect(secondResponse).toBeVisible();
     
     const secondResponseText = await secondResponse.textContent();
@@ -306,7 +303,7 @@ test.describe('Chat Context Retention', () => {
     await expect(page.locator('.bg-primary').filter({ hasText: 'binary trees' })).toBeVisible();
 
     // Wait for AI response
-    await expect(page.locator('.bg-muted').first()).toBeVisible({ timeout: 60000 });
+    await expect(page.locator('[data-testid="bot-message"]').first()).toBeVisible({ timeout: 60000 });
 
     // Switch to completely different topic
     await chatInput.fill('Now explain hash tables');
@@ -315,7 +312,7 @@ test.describe('Chat Context Retention', () => {
 
     // Second AI response should still work
     await page.waitForTimeout(3000);
-    const botMessages = page.locator('.bg-muted');
+    const botMessages = page.locator('[data-testid="bot-message"]');
     const count = await botMessages.count();
     expect(count).toBeGreaterThanOrEqual(1); // At least one response
 

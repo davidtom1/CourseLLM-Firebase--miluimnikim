@@ -119,6 +119,7 @@ export function ChatPanel({ courseMaterial, courseId }: ChatPanelProps) {
                         ? "bg-primary text-primary-foreground"
                         : "bg-muted"
                     )}
+                    {...(message.role === "bot" ? { "data-testid": "bot-message" } : {})}
                   >
                     <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                   </div>
