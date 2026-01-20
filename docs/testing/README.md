@@ -7,10 +7,8 @@ This directory contains standardized documentation for all CourseLLM tests.
 | Document | Test Type | Purpose |
 |----------|-----------|---------|
 | [e2e-tests.md](./e2e-tests.md) | Playwright E2E | Authentication, student journey, teacher analytics |
-| [frontend-unit-tests.md](./frontend-unit-tests.md) | Jest Unit | React components, TypeScript utilities |
+
 | [backend-tests.md](./backend-tests.md) | pytest | DSPy FastAPI service, health endpoints |
-| [dataconnect-validation.md](./dataconnect-validation.md) | Script | Firebase Data Connect IST storage |
-| [health-checks.md](./health-checks.md) | Manual | Health endpoints, debug pages |
 
 ## Additional Test Resources
 

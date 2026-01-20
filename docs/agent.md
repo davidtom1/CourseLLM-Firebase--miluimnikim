@@ -67,8 +67,6 @@ dataconnect/
 2. Navigate to: `http://localhost:9002/ist-dev/dataconnect`
 3. Use test page to verify queries work
 
-See [Data Connect Validation](./testing/dataconnect-validation.md) for full testing guide.
-
 ---
 
 ## Code Quality Requirements
@@ -298,10 +296,7 @@ See [Emulator Troubleshooting](./emulators.md) for more solutions.
 ### Test Documentation
 
 - [E2E Tests](./testing/e2e-tests.md)
-- [Frontend Unit Tests](./testing/frontend-unit-tests.md)
 - [Backend Tests](./testing/backend-tests.md)
-- [Data Connect Validation](./testing/dataconnect-validation.md)
-- [Health Checks](./testing/health-checks.md)
 
 ---
 
