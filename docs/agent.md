@@ -13,6 +13,11 @@ CourseLLM is an educational platform that uses AI to provide Socratic tutoring t
 - **Functions**: Firebase Cloud Functions v2
 - **Styling**: Tailwind CSS, shadcn/ui components
 
+**Related Documentation**:
+- [Setup Guide](./setup.md) - Development environment setup
+- [Architecture](./architecture.md) - System design overview
+- [Database](./database.md) - Data flow and schema
+
 ---
 
 ## Data Connect Policy
@@ -61,6 +66,8 @@ dataconnect/
 1. Start emulators: `firebase emulators:start`
 2. Navigate to: `http://localhost:9002/ist-dev/dataconnect`
 3. Use test page to verify queries work
+
+See [Data Connect Validation](./testing/dataconnect-validation.md) for full testing guide.
 
 ---
 
@@ -140,7 +147,7 @@ DSPY_SERVICE_URL=http://localhost:8000
 # Firebase Emulators
 NEXT_PUBLIC_FIREBASE_USE_EMULATOR=true
 FIRESTORE_EMULATOR_HOST=localhost:8080
-FIREBASE_FUNCTIONS_EMULATOR_HOST=localhost:5001
+FIREBASE_AUTH_EMULATOR_HOST=localhost:9099
 ```
 
 ### Optional
@@ -152,30 +159,55 @@ IST_STORAGE_MODE=json
 NEXT_PUBLIC_IST_ENGINE_MODE=api
 ```
 
+See [Setup Guide - Environment Configuration](./setup.md#environment-configuration) for complete details.
+
 ---
 
 ## Running the Application
 
-### Development Setup
+### Quick Start
+
+```bash
+# Clone and setup
+git clone https://github.com/LLMs-for-SE-2026-BGU/CourseLLM-Firebase.git
+cd CourseLLM-Firebase
+cp .env.example .env.local   # Add your API key
+
+# Run automated setup
+./scripts/start-servers.sh   # Linux/macOS
+.\scripts\start-servers.bat  # Windows
+```
+
+### Manual Setup (4 Terminals)
 
 ```bash
 # Terminal 1: Firebase Emulators
 firebase emulators:start
 
-# Terminal 2: Next.js Dev Server
-npm run dev
+# Terminal 2: Seed Test Users
+node scripts/seed-test-users.js
 
-# Terminal 3: DSPy Service (optional, for IST)
-cd dspy_service
-python -m uvicorn app:app --reload --port 8000
+# Terminal 3: DSPy Service
+cd dspy_service && python -m uvicorn app:app --reload --port 8000
+
+# Terminal 4: Next.js Dev Server
+npm run dev
 ```
 
 ### Access Points
 
-- **App**: http://localhost:9002
-- **Emulator UI**: http://localhost:4000
-- **Firestore**: http://localhost:8080
-- **Functions**: http://localhost:5001
+| Service | URL |
+|---------|-----|
+| App | http://localhost:9002 |
+| Emulator UI | http://localhost:4000 |
+| DSPy API Docs | http://localhost:8000/docs |
+
+### Test Credentials
+
+| Role | Email | Password |
+|------|-------|----------|
+| Student | `student@test.com` | `password123` |
+| Teacher | `teacher@test.com` | `password123` |
 
 ---
 
@@ -247,6 +279,29 @@ Module not found: @dataconnect/generated
 **Solution**:
 1. Start service: `cd dspy_service && python -m uvicorn app:app --port 8000`
 2. Check `DSPY_SERVICE_URL` in `.env.local`
+
+See [Emulator Troubleshooting](./emulators.md) for more solutions.
+
+---
+
+## Testing
+
+### Test Commands
+
+| Test Type | Command |
+|-----------|---------|
+| E2E (Playwright) | `npm run test:e2e` |
+| Frontend Unit (Jest) | `npm run test` |
+| Backend (pytest) | `cd dspy_service && pytest` |
+| Data Connect | `npx tsx scripts/test-dataconnect.ts` |
+
+### Test Documentation
+
+- [E2E Tests](./testing/e2e-tests.md)
+- [Frontend Unit Tests](./testing/frontend-unit-tests.md)
+- [Backend Tests](./testing/backend-tests.md)
+- [Data Connect Validation](./testing/dataconnect-validation.md)
+- [Health Checks](./testing/health-checks.md)
 
 ---
 

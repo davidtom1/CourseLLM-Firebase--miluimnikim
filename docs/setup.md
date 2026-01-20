@@ -7,27 +7,51 @@
 > **This project runs entirely in local development mode using Firebase emulators.**
 > **No production deployment or production credentials are required for grading.**
 
-### Fastest Local Setup (4 Steps)
+### Prerequisites
 
-1. **Clone the repository**:
+Ensure these are installed before proceeding:
+
+| Tool | Version | Installation |
+|------|---------|--------------|
+| **Node.js** | 22 LTS | [nodejs.org](https://nodejs.org) |
+| **Python** | 3.12+ | [python.org](https://python.org) |
+| **Java** | 11+ | [adoptium.net](https://adoptium.net) (required for Firebase emulators) |
+
+### Fastest Local Setup (6 Steps)
+
+1. **Install prerequisites** (if not already installed):
+   - Node.js 22 LTS from [nodejs.org](https://nodejs.org)
+   - Python 3.12+ from [python.org](https://python.org)
+   - Java 11+ from [adoptium.net](https://adoptium.net) (required for Firebase emulators)
+
+2. **Clone the repository**:
    ```bash
    git clone https://github.com/LLMs-for-SE-2026-BGU/CourseLLM-Firebase.git
    cd CourseLLM-Firebase
    ```
 
-2. **Create environment file**:
+3. **Create environment files**:
    ```bash
+   # Main app environment
    cp .env.example .env.local
-   ```
-   Then add your Google API key (see [Environment Configuration](#environment-configuration) for details)
 
-3. **Run the automated setup script**:
+   # DSPy service environment
+   cp dspy_service/.env.example dspy_service/.env
+   ```
+   Then add your Google API key to BOTH files (see [Environment Configuration](#environment-configuration))
+
+4. **Install npm dependencies** (first time only):
+   ```bash
+   npm install
+   ```
+
+5. **Run the automated setup script**:
    ```bash
    ./scripts/start-servers.sh        # Linux/macOS
    .\scripts\start-servers.bat       # Windows (PowerShell)
    ```
 
-4. **Open the app**: http://localhost:9002
+6. **Open the app**: http://localhost:9002
    - Login with `student@test.com` / `password123`
 
 **That's it.** If this works, you do NOT need to read the rest of this document.
@@ -49,16 +73,26 @@
 
 > **This is the ONE place for environment setup.** All other sections reference this.
 
-### Step 1: Create the Environment File
+### Two Environment Files Required
+
+This project requires **TWO** environment files:
+
+| File | Location | Purpose |
+|------|----------|---------|
+| `.env.local` | Project root | Next.js app configuration |
+| `.env` | `dspy_service/` | Python DSPy service configuration |
+
+### Step 1: Create Both Environment Files
 
 ```bash
+# From project root
 cp .env.example .env.local
+cp dspy_service/.env.example dspy_service/.env
 ```
 
-### Step 2: Add Your API Key
+### Step 2: Add Your API Key to Both Files
 
-Edit `.env.local` and set ONE real API key:
-
+**Edit `.env.local`** (project root):
 ```bash
 # REQUIRED: Google AI API Key (get free at https://aistudio.google.com/app/apikey)
 GOOGLE_API_KEY=your-google-api-key
@@ -69,7 +103,14 @@ NEXT_PUBLIC_GOOGLE_API_KEY=your-google-api-key
 NEXT_PUBLIC_FIREBASE_USE_EMULATOR=true
 FIRESTORE_EMULATOR_HOST=localhost:8080
 FIREBASE_AUTH_EMULATOR_HOST=localhost:9099
+```
+
+**Edit `dspy_service/.env`**:
+```bash
+# REQUIRED: Same Google API Key
 LLM_PROVIDER=gemini
+GEMINI_API_KEY=your-google-api-key
+GOOGLE_API_KEY=your-google-api-key
 ```
 
 ### What You Need to Know
@@ -88,12 +129,28 @@ LLM_PROVIDER=gemini
 
 The automated script installs all dependencies and starts all services locally.
 
+### Before Running the Script
+
+Ensure you have:
+1. **Installed prerequisites**: Node.js 22+, Python 3.12+, Java 11+
+2. **Created both environment files** with your API key (see above)
+3. **Run `npm install`** at least once
+
 ### Linux / macOS
 
 ```bash
 git clone https://github.com/LLMs-for-SE-2026-BGU/CourseLLM-Firebase.git
 cd CourseLLM-Firebase
-cp .env.example .env.local   # Add your API key (see above)
+
+# Create environment files
+cp .env.example .env.local
+cp dspy_service/.env.example dspy_service/.env
+# Edit both files to add your Google API key
+
+# Install dependencies (required before first run)
+npm install
+
+# Run automated setup
 ./scripts/start-servers.sh
 ```
 
@@ -102,16 +159,31 @@ cp .env.example .env.local   # Add your API key (see above)
 ```powershell
 git clone https://github.com/LLMs-for-SE-2026-BGU/CourseLLM-Firebase.git
 cd CourseLLM-Firebase
-cp .env.example .env.local   # Add your API key (see above)
+
+# Create environment files
+cp .env.example .env.local
+cp dspy_service/.env.example dspy_service/.env
+# Edit both files to add your Google API key
+
+# Install dependencies (required before first run)
+npm install
+
+# Run automated setup
 .\scripts\start-servers.bat
 ```
 
 ### What the Script Does
 
-- Installs Node.js dependencies (pnpm)
-- Installs Python dependencies (uv)
+The script automatically:
+- Checks Node.js and Python are installed
+- Installs root `node_modules/` (if missing)
+- Builds `functions/lib/` and installs `functions/node_modules/` (if missing)
+- Creates Python virtual environment `dspy_service/venv/` (if missing)
+- Installs Python dependencies
+- Installs Playwright browsers (if missing)
 - Starts Firebase emulators
 - Starts DSPy service
+- Seeds test users
 - Starts Next.js development server
 
 **When complete**, open http://localhost:9002 and login with test credentials.
@@ -125,75 +197,110 @@ cp .env.example .env.local   # Add your API key (see above)
 
 ### Prerequisites
 
-| Tool | Version | Installation |
-|------|---------|--------------|
-| Node.js | 22 LTS | [nodejs.org](https://nodejs.org) |
-| Python | 3.12+ | [python.org](https://python.org) |
-| pnpm | Latest | `npm install -g pnpm` |
-| uv | Latest | `pip install uv` |
-| Firebase CLI | 13.0.0+ | `npm install -g firebase-tools` |
+| Tool | Version | Purpose | Installation |
+|------|---------|---------|--------------|
+| **Node.js** | 22 LTS | Frontend & build | [nodejs.org](https://nodejs.org) |
+| **Python** | 3.12+ | DSPy service | [python.org](https://python.org) |
+| **Java** | 11+ | Firebase emulators | [adoptium.net](https://adoptium.net) |
+| **Firebase CLI** | 13.0.0+ | Emulator management | `npm install -g firebase-tools` |
 
 <details>
 <summary><strong>Platform-Specific Installation Commands</strong></summary>
 
 **macOS (Homebrew):**
 ```bash
-brew install node@22 python@3.12 pnpm
-pip3 install uv
+brew install node@22 python@3.12 openjdk@11
 npm install -g firebase-tools
 ```
 
 **Linux (Ubuntu/Debian):**
 ```bash
 sudo apt update
-sudo apt install nodejs npm python3.12 python3-pip
-npm install -g pnpm firebase-tools
-pip3 install uv
+sudo apt install nodejs npm python3.12 python3-pip python3-venv openjdk-11-jre
+npm install -g firebase-tools
 ```
 
 **Windows (Chocolatey):**
 ```powershell
-choco install nodejs python pnpm firebase-tools
-pip install uv
+choco install nodejs python openjdk11 firebase-tools
 ```
 
 **Windows (WinGet):**
 ```powershell
-winget install OpenJS.NodeJS Python
-npm install -g pnpm firebase-tools
-pip install uv
+winget install OpenJS.NodeJS Python.Python.3.12 EclipseAdoptium.Temurin.11.JRE
+npm install -g firebase-tools
 ```
 
 </details>
 
-### Step 1: Clone and Install Dependencies
+### Step 1: Clone Repository
 
 ```bash
 git clone https://github.com/LLMs-for-SE-2026-BGU/CourseLLM-Firebase.git
 cd CourseLLM-Firebase
-pnpm install
-uv sync
 ```
 
-### Step 2: Configure Environment
-
-See [Environment Configuration](#environment-configuration) above.
-
-### Step 3: Set Up Python Environment
+### Step 2: Create Environment Files
 
 ```bash
-cd dspy_service
-python -m venv venv
+# Main app environment
+cp .env.example .env.local
 
-# Activate:
-source venv/bin/activate        # Linux/macOS
-.\venv\Scripts\Activate.ps1     # Windows
+# DSPy service environment
+cp dspy_service/.env.example dspy_service/.env
+```
 
-uv sync
+Edit BOTH files to add your Google API key. See [Environment Configuration](#environment-configuration).
+
+### Step 3: Install Node.js Dependencies
+
+```bash
+# Install root dependencies
+npm install
+
+# Install and build Firebase Functions
+cd functions
+npm install
+npm run build
 cd ..
 ```
 
-### Step 4: Start Services
+This creates:
+- `node_modules/` - Root dependencies
+- `functions/node_modules/` - Functions dependencies
+- `functions/lib/` - Compiled functions
+
+### Step 4: Set Up Python Environment
+
+```bash
+cd dspy_service
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+source venv/bin/activate        # Linux/macOS
+.\venv\Scripts\Activate.ps1     # Windows
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+cd ..
+```
+
+This creates:
+- `dspy_service/venv/` - Python virtual environment
+
+### Step 5: Generate DataConnect SDK (if needed)
+
+```bash
+npm run dataconnect:generate
+```
+
+This creates:
+- `src/dataconnect-generated/` - Client SDK
+
+### Step 6: Start Services
 
 See [Running Services](#running-services-4-terminals) below.
 
@@ -219,10 +326,12 @@ python -m uvicorn app:app --reload --port 8000
 ### Terminal 2: Firebase Emulators
 
 ```bash
-firebase emulators:start --only auth,firestore,dataconnect
+firebase emulators:start --only auth,firestore,functions
 ```
 
 **Expected:** `All emulators ready!`
+
+> **Note:** Requires Java 11+ installed
 
 ### Terminal 3: Seed Test Users
 
@@ -241,6 +350,22 @@ npm run dev
 ```
 
 **Expected:** `Ready` on http://localhost:9002
+
+---
+
+## Generated Files & Folders
+
+These are created locally and listed in `.gitignore`:
+
+| Path | Created By | Purpose |
+|------|------------|---------|
+| `node_modules/` | `npm install` | Root dependencies |
+| `functions/node_modules/` | `cd functions && npm install` | Functions dependencies |
+| `functions/lib/` | `cd functions && npm run build` | Compiled functions |
+| `dspy_service/venv/` | `python -m venv venv` | Python environment |
+| `src/dataconnect-generated/` | `npm run dataconnect:generate` | DataConnect SDK |
+| `.env.local` | `cp .env.example .env.local` | App configuration |
+| `dspy_service/.env` | `cp dspy_service/.env.example dspy_service/.env` | DSPy configuration |
 
 ---
 
@@ -272,6 +397,15 @@ netstat -ano | findstr :9002
 taskkill /PID <PID> /F
 ```
 
+### Firebase Emulator Won't Start (Java Missing)
+
+Firebase emulators require Java 11+. Install from [adoptium.net](https://adoptium.net).
+
+```bash
+# Verify Java is installed
+java -version
+```
+
 ### Firebase Emulator Won't Connect
 
 ```bash
@@ -284,14 +418,25 @@ $Env:FIRESTORE_EMULATOR_HOST = "localhost:8080"
 $Env:FIREBASE_AUTH_EMULATOR_HOST = "localhost:9099"
 ```
 
-### Module Not Found
+### Module Not Found (Node)
 
 ```bash
-# Node modules
-pnpm install --force
+npm install
+cd functions && npm install && npm run build && cd ..
+```
 
-# Python modules
-cd dspy_service && uv sync --force
+### Module Not Found (Python)
+
+```bash
+cd dspy_service
+source venv/bin/activate   # or .\venv\Scripts\Activate.ps1 on Windows
+pip install -r requirements.txt
+```
+
+### DataConnect SDK Missing
+
+```bash
+npm run dataconnect:generate
 ```
 
 ---
@@ -300,7 +445,12 @@ cd dspy_service && uv sync --force
 
 Use this to verify your local setup is complete:
 
+- [ ] Prerequisites installed (Node.js 22+, Python 3.12+, Java 11+)
 - [ ] `.env.local` file exists with Google API key
+- [ ] `dspy_service/.env` file exists with Google API key
+- [ ] `node_modules/` folder exists
+- [ ] `functions/lib/` folder exists
+- [ ] `dspy_service/venv/` folder exists
 - [ ] Firebase emulators running (check http://localhost:4000)
 - [ ] DSPy service running on port 8000 (check http://localhost:8000/health)
 - [ ] Next.js running on port 9002 (check http://localhost:9002/api/health)
@@ -316,11 +466,13 @@ Use this to verify your local setup is complete:
 
 | Task | Command |
 |------|---------|
+| Install dependencies | `npm install` |
 | Start dev server | `npm run dev` |
 | Run E2E tests | `npm run test:e2e` |
 | Run unit tests | `npm run test` |
 | Run linter | `npm run lint` |
 | Build production | `npm run build` |
+| Generate DataConnect SDK | `npm run dataconnect:generate` |
 
 ---
 
