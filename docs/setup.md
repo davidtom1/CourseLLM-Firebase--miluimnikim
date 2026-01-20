@@ -131,10 +131,49 @@ The automated script installs all dependencies and starts all services locally.
 
 ### Before Running the Script
 
-Ensure you have:
-1. **Installed prerequisites**: Node.js 22+, Python 3.12+, Java 11+
-2. **Created both environment files** with your API key (see above)
-3. **Run `npm install`** at least once
+#### 1. Install Prerequisites
+
+**macOS (Homebrew):**
+```bash
+brew install node@22 python@3.12 openjdk@11
+```
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install nodejs npm python3.12 python3-pip python3-venv openjdk-11-jre
+```
+
+**Windows (Chocolatey):**
+```powershell
+choco install nodejs python openjdk11
+```
+
+**Windows (WinGet):**
+```powershell
+winget install OpenJS.NodeJS Python.Python.3.12 EclipseAdoptium.Temurin.11.JRE
+```
+
+**Verify installations:**
+```bash
+node --version    # Should show v22.x.x
+python --version  # Should show 3.12.x or higher
+java -version     # Should show 11 or higher
+```
+
+#### 2. Create Environment Files
+
+```bash
+cp .env.example .env.local
+cp dspy_service/.env.example dspy_service/.env
+```
+Then edit both files to add your Google API key (see [Environment Configuration](#environment-configuration))
+
+#### 3. Install npm Dependencies
+
+```bash
+npm install
+```
 
 ### Linux / macOS
 
