@@ -9,20 +9,39 @@
 
 ### Prerequisites
 
-Ensure these are installed before proceeding:
+Install Node.js 22+, Python 3.12+, and Java 11+ before proceeding:
 
-| Tool | Version | Installation |
-|------|---------|--------------|
-| **Node.js** | 22 LTS | [nodejs.org](https://nodejs.org) |
-| **Python** | 3.12+ | [python.org](https://python.org) |
-| **Java** | 11+ | [adoptium.net](https://adoptium.net) (required for Firebase emulators) |
+**macOS (Homebrew):**
+```bash
+brew install node@22 python@3.12 openjdk@11
+```
 
-### Fastest Local Setup (6 Steps)
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install nodejs npm python3.12 python3-pip python3-venv openjdk-11-jre
+```
 
-1. **Install prerequisites** (if not already installed):
-   - Node.js 22 LTS from [nodejs.org](https://nodejs.org)
-   - Python 3.12+ from [python.org](https://python.org)
-   - Java 11+ from [adoptium.net](https://adoptium.net) (required for Firebase emulators)
+**Windows (Chocolatey):**
+```powershell
+choco install nodejs python openjdk11
+```
+
+**Windows (WinGet):**
+```powershell
+winget install OpenJS.NodeJS Python.Python.3.12 EclipseAdoptium.Temurin.11.JRE
+```
+
+**Verify installations:**
+```bash
+node --version    # Should show v22.x.x
+python --version  # Should show 3.12.x or higher
+java -version     # Should show 11 or higher
+```
+
+### Fastest Local Setup (5 Steps)
+
+1. **Clone the repository**:
 
 2. **Clone the repository**:
    ```bash
@@ -131,49 +150,10 @@ The automated script installs all dependencies and starts all services locally.
 
 ### Before Running the Script
 
-#### 1. Install Prerequisites
-
-**macOS (Homebrew):**
-```bash
-brew install node@22 python@3.12 openjdk@11
-```
-
-**Linux (Ubuntu/Debian):**
-```bash
-sudo apt update
-sudo apt install nodejs npm python3.12 python3-pip python3-venv openjdk-11-jre
-```
-
-**Windows (Chocolatey):**
-```powershell
-choco install nodejs python openjdk11
-```
-
-**Windows (WinGet):**
-```powershell
-winget install OpenJS.NodeJS Python.Python.3.12 EclipseAdoptium.Temurin.11.JRE
-```
-
-**Verify installations:**
-```bash
-node --version    # Should show v22.x.x
-python --version  # Should show 3.12.x or higher
-java -version     # Should show 11 or higher
-```
-
-#### 2. Create Environment Files
-
-```bash
-cp .env.example .env.local
-cp dspy_service/.env.example dspy_service/.env
-```
-Then edit both files to add your Google API key (see [Environment Configuration](#environment-configuration))
-
-#### 3. Install npm Dependencies
-
-```bash
-npm install
-```
+Ensure you have completed:
+1. **Installed prerequisites** (see [Prerequisites](#prerequisites) above)
+2. **Created both environment files** with your API key (see [Environment Configuration](#environment-configuration))
+3. **Run `npm install`** at least once
 
 ### Linux / macOS
 
