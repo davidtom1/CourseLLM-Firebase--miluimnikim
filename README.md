@@ -135,21 +135,9 @@ Comprehensive test documentation for all test types:
 
 **[docs/testing/e2e-tests.md](./docs/testing/e2e-tests.md)** - Validates complete user flows including authentication, chat interactions, and teacher analytics.
 
-### Frontend Unit Tests (Jest)
-
-**[docs/testing/frontend-unit-tests.md](./docs/testing/frontend-unit-tests.md)** - Tests React components and TypeScript utilities including IntentInspector, ChatPanel, and IST report calculations.
-
 ### Backend Tests (pytest)
 
 **[docs/testing/backend-tests.md](./docs/testing/backend-tests.md)** - Tests the DSPy FastAPI service including health endpoints and IST extraction API.
-
-### Data Connect Validation
-
-**[docs/testing/dataconnect-validation.md](./docs/testing/dataconnect-validation.md)** - Validates Firebase Data Connect configuration and IST event storage operations.
-
-### Health Checks & Debug Pages
-
-**[docs/testing/health-checks.md](./docs/testing/health-checks.md)** - Documents health check endpoints and debug/development pages for system verification.
 
 ### IST UI Test Plan (Manual Testing)
 
